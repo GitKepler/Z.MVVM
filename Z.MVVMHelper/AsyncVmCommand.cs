@@ -18,9 +18,6 @@ namespace Z.MVVMHelper
         [NotNull] private readonly Func<TParam, bool> _canExecute;
         [NotNull] private readonly Func<TParam, Task> _execute;
 
-        [CanBeNull]
-        public IExceptionHandler ExceptionHandler { get; set; }
-
         public AsyncVmCommand([NotNull] Func<TParam, bool> canExecute, [NotNull] Func<TParam, Task> execute) {
             _canExecute = canExecute;
             _execute = execute;
@@ -33,8 +30,10 @@ namespace Z.MVVMHelper
         public AsyncVmCommand([NotNull] Func<Task> execute) : this(AlwaysEnabled, _ => execute()) { }
         public AsyncVmCommand([NotNull] Func<TParam, Task> execute) : this(AlwaysEnabled, execute) { }
 
+        [CanBeNull]
+        public IExceptionHandler ExceptionHandler { get; set; }
+
         public event EventHandler CanExecuteChanged;
-        public event EventHandler<ExecutingEventArgs> Executing;
 
         public bool CanExecute([CanBeNull] object parameter) {
             if (parameter is TParam t) {
@@ -61,5 +60,21 @@ namespace Z.MVVMHelper
                 awaitable.FireAndForget(ExceptionHandler);
             }
         }
+
+        public event EventHandler<ExecutingEventArgs> Executing;
+    }
+
+    public class AsyncVmCommand : AsyncVmCommand<object>
+    {
+        public AsyncVmCommand([NotNull] Func<object, bool> canExecute, [NotNull] Func<object, Task> execute) : base(
+            canExecute,
+            execute) { }
+
+        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] Func<Task> execute) : base(
+            _ => canExecute(),
+            _ => execute()) { }
+
+        public AsyncVmCommand([NotNull] Func<Task> execute) : base(AlwaysEnabled, _ => execute()) { }
+        public AsyncVmCommand([NotNull] Func<object, Task> execute) : base(AlwaysEnabled, execute) { }
     }
 }
