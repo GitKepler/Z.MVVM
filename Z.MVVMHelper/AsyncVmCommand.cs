@@ -61,6 +61,10 @@ namespace Z.MVVMHelper
             }
         }
 
+        public void Refresh() {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         public event EventHandler<ExecutingEventArgs> Executing;
     }
 
