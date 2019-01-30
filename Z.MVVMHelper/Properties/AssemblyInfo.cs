@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("Z.MVVMHelper")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("MVVMHelper")]
+[assembly: AssemblyDescription("MVVMHelper for WPF Applications")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Z.MVVMHelper")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Jérôme ZILLIOX")]
+[assembly: AssemblyProduct("MVVMHelper")]
+[assembly: AssemblyCopyright("Copyright © Jérôme ZILLIOX 2019")]
+[assembly: AssemblyTrademark("Jérôme ZILLIOX")]
 [assembly: AssemblyCulture("")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly
