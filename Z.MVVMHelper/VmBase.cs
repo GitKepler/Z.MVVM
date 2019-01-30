@@ -1,18 +1,20 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 #endregion
 
 namespace Z.MVVMHelper
 {
+    /// <summary>
+    ///     Base class for MVVM VMs
+    /// </summary>
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public abstract class VmBase : INotifyPropertyChanged, INotifyPropertyChanging
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -23,7 +25,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanging([NotNull] [CallerMemberName] string propName = "") {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propName));
+            DelegatePropertyChanging(propName);
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanged([NotNull] [CallerMemberName] string propName = "") {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            DelegatePropertyChanged(propName);
         }
 
         /// <summary>
@@ -45,10 +47,35 @@ namespace Z.MVVMHelper
         /// <param name="backingField">A ref to the backing field of the property</param>
         /// <param name="newValue">The new value of the property</param>
         /// <param name="propName">The name of the property</param>
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
         protected void EditProperty<T>([CanBeNull] ref T backingField, [CanBeNull] T newValue,
             [NotNull] [CallerMemberName] string propName = "") {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propName));
+            DelegatePropertyChanging(propName);
             backingField = newValue;
+            DelegatePropertyChanged(propName);
+        }
+
+        /// <summary>
+        ///     Delegate a call to <see cref="PropertyChanging" />
+        /// </summary>
+        /// <param name="propName">The property being changed</param>
+        protected void DelegatePropertyChanging([CanBeNull] string propName) {
+            if (string.IsNullOrWhiteSpace(propName)) {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(propName));
+            }
+
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propName));
+        }
+
+        /// <summary>
+        ///     Delegate a call to <see cref="PropertyChanged" />
+        /// </summary>
+        /// <param name="propName">The property after the changes has been made</param>
+        protected void DelegatePropertyChanged([CanBeNull] string propName) {
+            if (string.IsNullOrWhiteSpace(propName)) {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(propName));
+            }
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }

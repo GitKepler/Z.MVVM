@@ -48,6 +48,7 @@
     <Compile Include="AsyncVmCommand.cs" />
     <Compile Include="ExecutingEventArgs.cs" />
     <Compile Include="IExceptionHandler.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="TaskExtensions.cs" />
     <Compile Include="VmBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,22 +1,23 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
+using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 #endregion
 
 namespace Z.MVVMHelper
 {
+    [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     public class VmCommand<TParam> : ICommand
     {
         [NotNull] protected static readonly Predicate<TParam> AlwaysEnabled = _ => true;
         [NotNull] private readonly Predicate<TParam> _canExecute;
         [NotNull] private readonly Action<TParam> _execute;
+        private bool? _isEnabled;
 
         public VmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] Action<TParam> execute) {
             _execute = execute;
@@ -31,11 +32,25 @@ namespace Z.MVVMHelper
 
         public VmCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) { }
 
+        public bool IsEnabled {
+            get => CanExecute(null);
+            set {
+                _isEnabled = value;
+                Refresh();
+            }
+        }
+
+        public IExceptionHandler ExceptionHandler { get; set; }
+
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute([CanBeNull] object parameter) {
-            if (parameter is TParam t) {
-                return _canExecute(t);
+            if (_isEnabled is null) {
+                if (parameter is TParam t) {
+                    return _canExecute(t);
+                }
+            } else {
+                return _isEnabled.Value;
             }
 
             throw new ArgumentException(
@@ -43,12 +58,19 @@ namespace Z.MVVMHelper
         }
 
         public void Execute([CanBeNull] object parameter) {
-            if (parameter is TParam t) {
+            if (!(parameter is TParam t)) {
+                throw new ArgumentException(
+                    $"{nameof(parameter)} ({parameter?.GetType().Name ?? "null"}) is incompatible with {nameof(TParam)}");
+            }
+
+            try {
                 _execute(t);
+            } catch (Exception ex) {
+                ExceptionHandler?.HandleException(ex);
             }
 
             throw new ArgumentException(
-                $"{nameof(parameter)} ({parameter?.GetType().Name ?? "null"}) is incompatible with {nameof(TParam)}");
+                $"{nameof(parameter)} ({parameter.GetType().Name}) is incompatible with {nameof(TParam)}");
         }
 
         public void Refresh() {
@@ -56,6 +78,8 @@ namespace Z.MVVMHelper
         }
     }
 
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class VmCommand : VmCommand<object>
     {
         public VmCommand([NotNull] Predicate<object> canExecute, [NotNull] Action<object> execute) : base(

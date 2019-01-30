@@ -12,11 +12,12 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper
 {
-    public class AsyncVmCommand<TParam> : ICommand
+    public class AsyncVmCommand<TParam> : Interfaces.ICommand
     {
         [NotNull] protected static readonly Func<TParam, bool> AlwaysEnabled = _ => true;
         [NotNull] private readonly Func<TParam, bool> _canExecute;
         [NotNull] private readonly Func<TParam, Task> _execute;
+        private bool? _isEnabled;
 
         public AsyncVmCommand([NotNull] Func<TParam, bool> canExecute, [NotNull] Func<TParam, Task> execute) {
             _canExecute = canExecute;
@@ -30,14 +31,26 @@ namespace Z.MVVMHelper
         public AsyncVmCommand([NotNull] Func<Task> execute) : this(AlwaysEnabled, _ => execute()) { }
         public AsyncVmCommand([NotNull] Func<TParam, Task> execute) : this(AlwaysEnabled, execute) { }
 
+        public bool IsEnabled {
+            get => CanExecute(null);
+            set {
+                _isEnabled = value;
+                Refresh();
+            }
+        }
+
         [CanBeNull]
         public IExceptionHandler ExceptionHandler { get; set; }
 
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute([CanBeNull] object parameter) {
-            if (parameter is TParam t) {
-                return _canExecute(t);
+            if (_isEnabled is null) {
+                if (parameter is TParam t) {
+                    return _canExecute(t);
+                }
+            } else {
+                return _isEnabled.Value;
             }
 
             throw new ArgumentException(
