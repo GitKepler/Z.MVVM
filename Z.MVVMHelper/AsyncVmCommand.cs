@@ -83,6 +83,7 @@ namespace Z.MVVMHelper
         /// </param>
         public AsyncVmCommand([NotNull] Func<TParam, Task> execute) : this(AlwaysEnabled, execute) { }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Check whether the command can be run and force an override (one-time)
         /// </summary>

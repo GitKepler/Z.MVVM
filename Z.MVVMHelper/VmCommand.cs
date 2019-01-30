@@ -141,7 +141,8 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.VmCommand`1.CanExecute(System.Object)" /> return value might have changed
+        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.VmCommand`1.CanExecute(System.Object)" /> return value might
+        ///     have changed
         /// </summary>
         public void Refresh() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
