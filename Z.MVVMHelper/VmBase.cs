@@ -10,6 +10,8 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper
 {
+    /// <inheritdoc cref="INotifyPropertyChanging" />
+    /// <inheritdoc cref="INotifyPropertyChanged" />
     /// <summary>
     ///     Base class for MVVM VMs
     /// </summary>
@@ -17,7 +19,16 @@ namespace Z.MVVMHelper
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public abstract class VmBase : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        /// <inheritdoc />
+        /// <summary>
+        ///     When a property is changed
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     When a property is changing
+        /// </summary>
         public event PropertyChangingEventHandler PropertyChanging;
 
         /// <summary>
