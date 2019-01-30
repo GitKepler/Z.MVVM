@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
+using Z.MVVMHelper.Interfaces;
 using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 #endregion

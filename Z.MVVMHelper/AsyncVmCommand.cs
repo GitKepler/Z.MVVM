@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using JetBrains.Annotations;
+using Z.MVVMHelper.Interfaces;
 using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 #endregion
