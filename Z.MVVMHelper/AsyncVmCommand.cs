@@ -14,6 +14,7 @@ using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 namespace Z.MVVMHelper
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Asynchronous MVVM Command
     /// </summary>
@@ -92,10 +93,10 @@ namespace Z.MVVMHelper
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Handler whenever a method throws an exception
         /// </summary>
-        [CanBeNull]
         public IExceptionHandler ExceptionHandler { get; set; }
 
         /// <inheritdoc />
@@ -105,6 +106,7 @@ namespace Z.MVVMHelper
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
+        /// <inheritdoc />
         /// <summary>
         ///     Returns whether the command might or not be able to run depending on the binding parameter
         /// </summary>
@@ -145,8 +147,10 @@ namespace Z.MVVMHelper
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Indicate that the command's <see cref="CanExecute" /> return value might have changed
+        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.AsyncVmCommand`1.CanExecute(System.Object)" /> return value
+        ///     might have changed
         /// </summary>
         public void Refresh() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

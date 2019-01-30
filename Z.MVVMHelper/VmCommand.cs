@@ -9,6 +9,7 @@ using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 namespace Z.MVVMHelper
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Synchronous MVVM Command
     /// </summary>
@@ -63,6 +64,7 @@ namespace Z.MVVMHelper
         /// <param name="execute"><see cref="Action" /> determining the what the command is doing</param>
         public VmCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) { }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Check whether the command can be run and force an override (one-time)
         /// </summary>
@@ -74,6 +76,7 @@ namespace Z.MVVMHelper
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Handler whenever a method throws an exception
         /// </summary>
@@ -86,6 +89,7 @@ namespace Z.MVVMHelper
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
+        /// <inheritdoc />
         /// <summary>
         ///     Returns whether the command might or not be able to run depending on the binding parameter
         /// </summary>
@@ -134,8 +138,9 @@ namespace Z.MVVMHelper
                 $"{nameof(parameter)} ({parameter?.GetType().Name ?? "null"}) is incompatible with {nameof(TParam)}");
         }
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Indicate that the command's <see cref="CanExecute" /> return value might have changed
+        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.VmCommand`1.CanExecute(System.Object)" /> return value might have changed
         /// </summary>
         public void Refresh() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
