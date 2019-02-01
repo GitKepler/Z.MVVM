@@ -36,8 +36,8 @@ namespace Z.MVVMHelper
         /// <param name="canExecute"><see cref="Predicate{T}" /> determining whether the command can be executed</param>
         /// <param name="execute"><see cref="Action{T}" /> determining the what the command is doing</param>
         public VmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] Action<TParam> execute) {
-            _execute = execute;
-            _canExecute = canExecute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         /// <inheritdoc />
@@ -46,7 +46,11 @@ namespace Z.MVVMHelper
         ///     binding parameters
         /// </summary>
         /// <param name="execute"><see cref="Action{T}" /> determining the what the command is doing</param>
-        public VmCommand([NotNull] Action<TParam> execute) : this(AlwaysEnabled, execute) { }
+        public VmCommand([NotNull] Action<TParam> execute) : this(AlwaysEnabled, execute) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -56,14 +60,26 @@ namespace Z.MVVMHelper
         /// <param name="execute"><see cref="Action" /> determining the what the command is doing</param>
         public VmCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : this(
             _ => canExecute(),
-            _ => canExecute()) { }
+            _ => canExecute()) {
+            if (canExecute == null) {
+                throw new ArgumentNullException(nameof(canExecute));
+            }
+
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
         ///     Create a <see cref="VmCommand{TParam}" /> with custom values for the action to execute
         /// </summary>
         /// <param name="execute"><see cref="Action" /> determining the what the command is doing</param>
-        public VmCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) { }
+        public VmCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -164,7 +180,15 @@ namespace Z.MVVMHelper
         /// <param name="execute"></param>
         public VmCommand([NotNull] Predicate<object> canExecute, [NotNull] Action<object> execute) : base(
             canExecute,
-            execute) { }
+            execute) {
+            if (canExecute == null) {
+                throw new ArgumentNullException(nameof(canExecute));
+            }
+
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -173,18 +197,34 @@ namespace Z.MVVMHelper
         /// <param name="execute"></param>
         public VmCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : base(
             _ => canExecute(),
-            _ => canExecute()) { }
+            _ => canExecute()) {
+            if (canExecute == null) {
+                throw new ArgumentNullException(nameof(canExecute));
+            }
+
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public VmCommand([NotNull] Action execute) : base(AlwaysEnabled, _ => execute()) { }
+        public VmCommand([NotNull] Action execute) : base(AlwaysEnabled, _ => execute()) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public VmCommand([NotNull] Action<object> execute) : base(execute) { }
+        public VmCommand([NotNull] Action<object> execute) : base(execute) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
     }
 }

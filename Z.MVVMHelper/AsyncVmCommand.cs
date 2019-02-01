@@ -45,8 +45,8 @@ namespace Z.MVVMHelper
         ///     <see cref="Task" /> to await
         /// </param>
         public AsyncVmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] AsyncAction<TParam> execute) {
-            _canExecute = canExecute;
-            _execute = execute;
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         /// <inheritdoc />
@@ -60,7 +60,15 @@ namespace Z.MVVMHelper
         /// </param>
         public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : this(
             _ => canExecute(),
-            _ => execute()) { }
+            _ => execute()) {
+            if (canExecute == null) {
+                throw new ArgumentNullException(nameof(canExecute));
+            }
+
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -72,7 +80,11 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] AsyncAction execute) : this(AlwaysEnabled, _ => execute()) { }
+        public AsyncVmCommand([NotNull] AsyncAction execute) : this(AlwaysEnabled, _ => execute()) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -82,7 +94,11 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] AsyncAction<TParam> execute) : this(AlwaysEnabled, execute) { }
+        public AsyncVmCommand([NotNull] AsyncAction<TParam> execute) : this(AlwaysEnabled, execute) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -179,7 +195,15 @@ namespace Z.MVVMHelper
         /// <param name="execute"></param>
         public AsyncVmCommand([NotNull] Predicate<object> canExecute, [NotNull] AsyncAction<object> execute) : base(
             canExecute,
-            execute) { }
+            execute) {
+            if (canExecute == null) {
+                throw new ArgumentNullException(nameof(canExecute));
+            }
+
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -188,18 +212,34 @@ namespace Z.MVVMHelper
         /// <param name="execute"></param>
         public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : base(
             _ => canExecute(),
-            _ => execute()) { }
+            _ => execute()) {
+            if (canExecute == null) {
+                throw new ArgumentNullException(nameof(canExecute));
+            }
+
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] AsyncAction execute) : base(AlwaysEnabled, _ => execute()) { }
+        public AsyncVmCommand([NotNull] AsyncAction execute) : base(AlwaysEnabled, _ => execute()) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
 
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] AsyncAction<object> execute) : base(AlwaysEnabled, execute) { }
+        public AsyncVmCommand([NotNull] AsyncAction<object> execute) : base(AlwaysEnabled, execute) {
+            if (execute == null) {
+                throw new ArgumentNullException(nameof(execute));
+            }
+        }
     }
 }
