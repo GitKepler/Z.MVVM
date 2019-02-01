@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncTaskStatus.cs" />
+    <Compile Include="AsyncTypes.cs" />
     <Compile Include="AsyncVmCommand.cs" />
     <Compile Include="ExecutingEventArgs.cs" />
     <Compile Include="Interfaces\IExceptionHandler.cs" />

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Interfaces;
+using static Z.MVVMHelper.AsyncTypes;
 using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 #endregion
@@ -31,7 +32,7 @@ namespace Z.MVVMHelper
         [NotNull] public static readonly Predicate<TParam> AlwaysEnabled = _ => true;
 
         [NotNull] private readonly Predicate<TParam> _canExecute;
-        [NotNull] private readonly Func<TParam, Task> _execute;
+        [NotNull] private readonly AsyncAction<TParam> _execute;
         private bool? _isEnabled;
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] Func<TParam, Task> execute) {
+        public AsyncVmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] AsyncAction<TParam> execute) {
             _canExecute = canExecute;
             _execute = execute;
         }
@@ -57,7 +58,7 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] Func<Task> execute) : this(
+        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : this(
             _ => canExecute(),
             _ => execute()) { }
 
@@ -71,7 +72,7 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] Func<Task> execute) : this(AlwaysEnabled, _ => execute()) { }
+        public AsyncVmCommand([NotNull] AsyncAction execute) : this(AlwaysEnabled, _ => execute()) { }
 
         /// <inheritdoc />
         /// <summary>
@@ -81,7 +82,7 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] Func<TParam, Task> execute) : this(AlwaysEnabled, execute) { }
+        public AsyncVmCommand([NotNull] AsyncAction<TParam> execute) : this(AlwaysEnabled, execute) { }
 
         /// <inheritdoc />
         /// <summary>
@@ -176,7 +177,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="canExecute"></param>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] Predicate<object> canExecute, [NotNull] Func<object, Task> execute) : base(
+        public AsyncVmCommand([NotNull] Predicate<object> canExecute, [NotNull] AsyncAction<object> execute) : base(
             canExecute,
             execute) { }
 
@@ -185,7 +186,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="canExecute"></param>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] Func<Task> execute) : base(
+        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : base(
             _ => canExecute(),
             _ => execute()) { }
 
@@ -193,12 +194,12 @@ namespace Z.MVVMHelper
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] Func<Task> execute) : base(AlwaysEnabled, _ => execute()) { }
+        public AsyncVmCommand([NotNull] AsyncAction execute) : base(AlwaysEnabled, _ => execute()) { }
 
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] Func<object, Task> execute) : base(AlwaysEnabled, execute) { }
+        public AsyncVmCommand([NotNull] AsyncAction<object> execute) : base(AlwaysEnabled, execute) { }
     }
 }
