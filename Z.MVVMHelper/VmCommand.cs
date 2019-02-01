@@ -127,7 +127,7 @@ namespace Z.MVVMHelper
             }
 
             throw new ArgumentException(
-                $"{nameof(parameter)} ({parameter?.GetType().Name}) is incompatible with {nameof(TParam)}");
+                $"{nameof(parameter)} ({parameter.GetType().Name}) is incompatible with {nameof(TParam)}");
         }
 
         /// <inheritdoc />
@@ -138,7 +138,7 @@ namespace Z.MVVMHelper
         public void Execute([CanBeNull] object parameter) {
             if (!(parameter is TParam) && !(parameter is null)) {
                 throw new ArgumentException(
-                    $"{nameof(parameter)} ({parameter?.GetType().Name}) is incompatible with {nameof(TParam)}");
+                    $"{nameof(parameter)} ({parameter.GetType().Name}) is incompatible with {nameof(TParam)}");
             }
 
             try {

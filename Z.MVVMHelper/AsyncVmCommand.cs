@@ -1,12 +1,8 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Interfaces;
 using static Z.MVVMHelper.AsyncTypes;

@@ -1,10 +1,6 @@
 ﻿#region USINGS
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 #endregion
@@ -13,6 +9,7 @@ namespace Z.MVVMHelper
 {
     /// <summary>
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class AsyncTypes
     {
         /// <summary>

@@ -1,9 +1,6 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Interfaces;
@@ -15,6 +12,10 @@ namespace Z.MVVMHelper
     internal static class TaskExtensions
     {
         public static async void FireAndForget([NotNull] this Task task, [CanBeNull] IExceptionHandler handler) {
+            if (task == null) {
+                throw new ArgumentNullException(nameof(task));
+            }
+
             try {
                 await task;
             } catch (Exception e) {
