@@ -17,7 +17,8 @@ namespace Z.MVVMHelper
     /// </summary>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public abstract class VmBase : INotifyPropertyChanged, INotifyPropertyChanging
+    // ReSharper disable once InconsistentNaming
+    public abstract class VMBase : INotifyPropertyChanged, INotifyPropertyChanging
     {
         /// <inheritdoc />
         /// <summary>

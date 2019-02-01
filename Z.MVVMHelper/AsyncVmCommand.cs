@@ -4,8 +4,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Z.MVVMHelper.AsyncTypes;
 using Z.MVVMHelper.Interfaces;
-using static Z.MVVMHelper.AsyncTypes;
 using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 #endregion
@@ -20,7 +20,8 @@ namespace Z.MVVMHelper
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [SuppressMessage("ReSharper", "EventNeverSubscribedTo.Global")]
-    public class AsyncVmCommand<TParam> : ICommand
+    // ReSharper disable once InconsistentNaming
+    public class AsyncVMCommand<TParam> : ICommand
     {
         /// <summary>
         ///     Always enable the command
@@ -32,7 +33,7 @@ namespace Z.MVVMHelper
         private bool? _isEnabled;
 
         /// <summary>
-        ///     Create a <see cref="AsyncVmCommand{TParam}" /> with custom values for every field taking in argument the binding
+        ///     Create a <see cref="AsyncVMCommand{TParam}" /> with custom values for every field taking in argument the binding
         ///     parameters
         /// </summary>
         /// <param name="canExecute"><see cref="Predicate{T}" /> determining whether the command can be executed</param>
@@ -40,21 +41,21 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] AsyncAction<TParam> execute) {
+        public AsyncVMCommand([NotNull] Predicate<TParam> canExecute, [NotNull] AsyncAction<TParam> execute) {
             _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         /// <inheritdoc />
         /// <summary>
-        ///     Create a <see cref="AsyncVmCommand{TParam}" /> with custom values for every field
+        ///     Create a <see cref="AsyncVMCommand{TParam}" /> with custom values for every field
         /// </summary>
         /// <param name="canExecute"><see cref="Func{TResult}" /> determining whether the command can be executed</param>
         /// <param name="execute">
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : this(
+        public AsyncVMCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : this(
             _ => canExecute(),
             _ => execute()) {
             if (canExecute == null) {
@@ -68,7 +69,7 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Create a <see cref="AsyncVmCommand{TParam}" /> with custom values for the action to execute and taking in argument
+        ///     Create a <see cref="AsyncVMCommand{TParam}" /> with custom values for the action to execute and taking in argument
         ///     the
         ///     binding parameters
         /// </summary>
@@ -76,7 +77,7 @@ namespace Z.MVVMHelper
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] AsyncAction execute) : this(AlwaysEnabled, _ => execute()) {
+        public AsyncVMCommand([NotNull] AsyncAction execute) : this(AlwaysEnabled, _ => execute()) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }
@@ -84,13 +85,13 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Create a <see cref="VmCommand{TParam}" /> with custom values for the action to execute
+        ///     Create a <see cref="VMCommand" /> with custom values for the action to execute
         /// </summary>
         /// <param name="execute">
         ///     <see cref="Func{TResult}" /> determining the what the command is doing. The returned value is the
         ///     <see cref="Task" /> to await
         /// </param>
-        public AsyncVmCommand([NotNull] AsyncAction<TParam> execute) : this(AlwaysEnabled, execute) {
+        public AsyncVMCommand([NotNull] AsyncAction<TParam> execute) : this(AlwaysEnabled, execute) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }
@@ -116,7 +117,7 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Event triggered whenever <see cref="M:Z.MVVMHelper.VmCommand`1.CanExecute(System.Object)" /> might return another
+        ///     Event triggered whenever <see cref="M:Z.MVVMHelper.VMCommand`1.CanExecute(System.Object)" /> might return another
         ///     value
         /// </summary>
         public event EventHandler CanExecuteChanged;
@@ -164,7 +165,7 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.AsyncVmCommand`1.CanExecute(System.Object)" /> return value
+        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.AsyncVMCommand`1.CanExecute(System.Object)" /> return value
         ///     might have changed
         /// </summary>
         public void Refresh() {
@@ -182,14 +183,15 @@ namespace Z.MVVMHelper
     ///     Asynchronous MVVM Command
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class AsyncVmCommand : AsyncVmCommand<object>
+    // ReSharper disable once InconsistentNaming
+    public class AsyncVMCommand : AsyncVMCommand<object>
     {
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="canExecute"></param>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] Predicate<object> canExecute, [NotNull] AsyncAction<object> execute) : base(
+        public AsyncVMCommand([NotNull] Predicate<object> canExecute, [NotNull] AsyncAction<object> execute) : base(
             canExecute,
             execute) {
             if (canExecute == null) {
@@ -206,7 +208,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="canExecute"></param>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : base(
+        public AsyncVMCommand([NotNull] Func<bool> canExecute, [NotNull] AsyncAction execute) : base(
             _ => canExecute(),
             _ => execute()) {
             if (canExecute == null) {
@@ -222,7 +224,7 @@ namespace Z.MVVMHelper
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] AsyncAction execute) : base(AlwaysEnabled, _ => execute()) {
+        public AsyncVMCommand([NotNull] AsyncAction execute) : base(AlwaysEnabled, _ => execute()) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }
@@ -232,7 +234,7 @@ namespace Z.MVVMHelper
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public AsyncVmCommand([NotNull] AsyncAction<object> execute) : base(AlwaysEnabled, execute) {
+        public AsyncVMCommand([NotNull] AsyncAction<object> execute) : base(AlwaysEnabled, execute) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }

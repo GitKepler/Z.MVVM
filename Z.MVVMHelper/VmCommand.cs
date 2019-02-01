@@ -18,7 +18,8 @@ namespace Z.MVVMHelper
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    public class VmCommand<TParam> : ICommand
+    // ReSharper disable once InconsistentNaming
+    public class VMCommand<TParam> : ICommand
     {
         /// <summary>
         ///     Always enable the command
@@ -30,23 +31,23 @@ namespace Z.MVVMHelper
         private bool? _isEnabled;
 
         /// <summary>
-        ///     Create a <see cref="VmCommand{TParam}" /> with custom values for every field taking in argument the binding
+        ///     Create a <see cref="VMCommand" /> with custom values for every field taking in argument the binding
         ///     parameters
         /// </summary>
         /// <param name="canExecute"><see cref="Predicate{T}" /> determining whether the command can be executed</param>
         /// <param name="execute"><see cref="Action{T}" /> determining the what the command is doing</param>
-        public VmCommand([NotNull] Predicate<TParam> canExecute, [NotNull] Action<TParam> execute) {
+        public VMCommand([NotNull] Predicate<TParam> canExecute, [NotNull] Action<TParam> execute) {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         /// <inheritdoc />
         /// <summary>
-        ///     Create a <see cref="VmCommand{TParam}" /> with custom values for the action to execute and taking in argument the
+        ///     Create a <see cref="VMCommand" /> with custom values for the action to execute and taking in argument the
         ///     binding parameters
         /// </summary>
         /// <param name="execute"><see cref="Action{T}" /> determining the what the command is doing</param>
-        public VmCommand([NotNull] Action<TParam> execute) : this(AlwaysEnabled, execute) {
+        public VMCommand([NotNull] Action<TParam> execute) : this(AlwaysEnabled, execute) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }
@@ -54,11 +55,11 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Create a <see cref="VmCommand{TParam}" /> with custom values for every field
+        ///     Create a <see cref="VMCommand" /> with custom values for every field
         /// </summary>
         /// <param name="canExecute"><see cref="Func{TResult}" /> determining whether the command can be executed</param>
         /// <param name="execute"><see cref="Action" /> determining the what the command is doing</param>
-        public VmCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : this(
+        public VMCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : this(
             _ => canExecute(),
             _ => canExecute()) {
             if (canExecute == null) {
@@ -72,10 +73,10 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Create a <see cref="VmCommand{TParam}" /> with custom values for the action to execute
+        ///     Create a <see cref="VMCommand" /> with custom values for the action to execute
         /// </summary>
         /// <param name="execute"><see cref="Action" /> determining the what the command is doing</param>
-        public VmCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) {
+        public VMCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }
@@ -101,7 +102,7 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Event triggered whenever <see cref="M:Z.MVVMHelper.VmCommand`1.CanExecute(System.Object)" /> might return another
+        ///     Event triggered whenever <see cref="M:Z.MVVMHelper.VMCommand`1.CanExecute(System.Object)" /> might return another
         ///     value
         /// </summary>
         public event EventHandler CanExecuteChanged;
@@ -147,8 +148,8 @@ namespace Z.MVVMHelper
                 } else {
                     _execute((TParam) parameter);
                 }
-            } catch (Exception ex) {
-                ExceptionHandler?.HandleException(ex);
+            } catch (Exception ex) when (!(ExceptionHandler is null)) {
+                ExceptionHandler.HandleException(ex);
             }
 
             throw new ArgumentException(
@@ -157,7 +158,7 @@ namespace Z.MVVMHelper
 
         /// <inheritdoc />
         /// <summary>
-        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.VmCommand`1.CanExecute(System.Object)" /> return value might
+        ///     Indicate that the command's <see cref="M:Z.MVVMHelper.VMCommand`1.CanExecute(System.Object)" /> return value might
         ///     have changed
         /// </summary>
         public void Refresh() {
@@ -171,14 +172,15 @@ namespace Z.MVVMHelper
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class VmCommand : VmCommand<object>
+    // ReSharper disable once InconsistentNaming
+    public class VMCommand : VMCommand<object>
     {
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="canExecute"></param>
         /// <param name="execute"></param>
-        public VmCommand([NotNull] Predicate<object> canExecute, [NotNull] Action<object> execute) : base(
+        public VMCommand([NotNull] Predicate<object> canExecute, [NotNull] Action<object> execute) : base(
             canExecute,
             execute) {
             if (canExecute == null) {
@@ -195,7 +197,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="canExecute"></param>
         /// <param name="execute"></param>
-        public VmCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : base(
+        public VMCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : base(
             _ => canExecute(),
             _ => canExecute()) {
             if (canExecute == null) {
@@ -211,7 +213,7 @@ namespace Z.MVVMHelper
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public VmCommand([NotNull] Action execute) : base(AlwaysEnabled, _ => execute()) {
+        public VMCommand([NotNull] Action execute) : base(AlwaysEnabled, _ => execute()) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }
@@ -221,7 +223,7 @@ namespace Z.MVVMHelper
         /// <summary>
         /// </summary>
         /// <param name="execute"></param>
-        public VmCommand([NotNull] Action<object> execute) : base(execute) {
+        public VMCommand([NotNull] Action<object> execute) : base(execute) {
             if (execute == null) {
                 throw new ArgumentNullException(nameof(execute));
             }

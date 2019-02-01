@@ -18,8 +18,8 @@ namespace Z.MVVMHelper
 
             try {
                 await task;
-            } catch (Exception e) {
-                handler?.HandleException(e);
+            } catch (Exception e) when (!(handler is null)) {
+                handler.HandleException(e);
             }
         }
     }
