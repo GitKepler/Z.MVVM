@@ -38,7 +38,7 @@ namespace Z.MVVMHelper
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanging([NotNull] [CallerMemberName] string propName = "") {
             if (propName == null) {
-                throw new ArgumentNullException(nameof(propName));
+                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName));
             }
 
             DelegatePropertyChanging(propName);
@@ -50,7 +50,7 @@ namespace Z.MVVMHelper
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanged([NotNull] [CallerMemberName] string propName = "") {
             if (propName == null) {
-                throw new ArgumentNullException(nameof(propName));
+                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName));
             }
 
             DelegatePropertyChanged(propName);
@@ -81,7 +81,7 @@ namespace Z.MVVMHelper
         /// <param name="propName">The property being changed</param>
         protected void DelegatePropertyChanging([CanBeNull] string propName) {
             if (string.IsNullOrWhiteSpace(propName)) {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(propName));
+                throw Internals.ExceptionGenerator.ArgumentNullOrEmpty( nameof(propName));
             }
 
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propName));
@@ -93,7 +93,7 @@ namespace Z.MVVMHelper
         /// <param name="propName">The property after the changes has been made</param>
         protected void DelegatePropertyChanged([CanBeNull] string propName) {
             if (string.IsNullOrWhiteSpace(propName)) {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(propName));
+                throw Internals.ExceptionGenerator.ArgumentNullOrEmpty( nameof(propName));
             }
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));

@@ -13,7 +13,7 @@ namespace Z.MVVMHelper
     {
         public static async void FireAndForget([NotNull] this Task task, [CanBeNull] IExceptionHandler handler) {
             if (task == null) {
-                throw new ArgumentNullException(nameof(task));
+                throw Internals.ExceptionGenerator.ArgumentNull(nameof(task));
             }
 
             try {
