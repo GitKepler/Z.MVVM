@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Z.MVVMHelper.AsyncTypes;
 using Z.MVVMHelper.Interfaces;
+using Z.MVVMHelper.Internals;
 using ICommand = Z.MVVMHelper.Interfaces.ICommand;
 
 #endregion

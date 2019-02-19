@@ -7,13 +7,13 @@ using Z.MVVMHelper.Interfaces;
 
 #endregion
 
-namespace Z.MVVMHelper
+namespace Z.MVVMHelper.Internals
 {
     internal static class TaskExtensions
     {
         public static async void FireAndForget([NotNull] this Task task, [CanBeNull] IExceptionHandler handler) {
             if (task == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(task));
+                throw ExceptionGenerator.ArgumentNull(nameof(task));
             }
 
             try {
