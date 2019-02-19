@@ -49,11 +49,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncTaskStatus.cs" />
     <Compile Include="AsyncTypes\AsyncTypes.cs" />
     <Compile Include="AsyncVMCommand.cs" />
+    <Compile Include="Converters\BoolToRedGreenConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\InverterConverter.cs" />
     <Compile Include="ExecutingEventArgs.cs" />
