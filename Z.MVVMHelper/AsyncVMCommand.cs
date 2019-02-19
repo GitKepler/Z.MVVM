@@ -43,8 +43,8 @@ namespace Z.MVVMHelper
         ///     <see cref="Task" /> to await
         /// </param>
         public AsyncVMCommand([NotNull] Predicate<TParam> canExecute, [NotNull] AsyncAction<TParam> execute) {
-            _canExecute = canExecute ?? throw Internals.ExceptionGenerator.ArgumentNull(nameof(canExecute));
-            _execute = execute ?? throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+            _canExecute = canExecute ?? throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
+            _execute = execute ?? throw ExceptionGenerator.ArgumentNull(nameof(execute));
         }
 
         /// <inheritdoc />
@@ -60,11 +60,11 @@ namespace Z.MVVMHelper
             _ => canExecute(),
             _ => execute()) {
             if (canExecute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(canExecute));
+                throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
             }
 
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
 
@@ -80,7 +80,7 @@ namespace Z.MVVMHelper
         /// </param>
         public AsyncVMCommand([NotNull] AsyncAction execute) : this(AlwaysEnabled, _ => execute()) {
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
 
@@ -94,7 +94,7 @@ namespace Z.MVVMHelper
         /// </param>
         public AsyncVMCommand([NotNull] AsyncAction<TParam> execute) : this(AlwaysEnabled, execute) {
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
 
@@ -196,11 +196,11 @@ namespace Z.MVVMHelper
             canExecute,
             execute) {
             if (canExecute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(canExecute));
+                throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
             }
 
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
 
@@ -213,11 +213,11 @@ namespace Z.MVVMHelper
             _ => canExecute(),
             _ => execute()) {
             if (canExecute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(canExecute));
+                throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
             }
 
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
 
@@ -227,7 +227,7 @@ namespace Z.MVVMHelper
         /// <param name="execute"></param>
         public AsyncVMCommand([NotNull] AsyncAction execute) : base(AlwaysEnabled, _ => execute()) {
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
 
@@ -237,7 +237,7 @@ namespace Z.MVVMHelper
         /// <param name="execute"></param>
         public AsyncVMCommand([NotNull] AsyncAction<object> execute) : base(AlwaysEnabled, execute) {
             if (execute == null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(execute));
+                throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
     }
