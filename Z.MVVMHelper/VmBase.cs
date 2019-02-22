@@ -8,7 +8,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using System.Windows.Documents;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Internals;
 
@@ -26,12 +28,6 @@ namespace Z.MVVMHelper
     // ReSharper disable once InconsistentNaming
     public abstract class VMBase : INotifyPropertyChanged, INotifyPropertyChanging
     {
-        [NotNull] private static readonly ConcurrentDictionary<Type, object> _defaultValues =
-            new ConcurrentDictionary<Type, object>();
-
-        [NotNull] private readonly ConcurrentDictionary<string, object> _backingfields =
-            new ConcurrentDictionary<string, object>();
-
         /// <inheritdoc />
         /// <summary>
         ///     When a property is changed
@@ -44,28 +40,6 @@ namespace Z.MVVMHelper
         /// </summary>
         public event PropertyChangingEventHandler PropertyChanging;
 
-        public void Initialize() {
-            IEnumerable<PropertyInfo> props = GetType()
-                .GetProperties()
-                .Where(prop => prop.CustomAttributes?.Any(a => a?.AttributeType == typeof(AnchorAttribute)) ?? false);
-            foreach (PropertyInfo propertyInfo in props) {
-                if (!_defaultValues.ContainsKey(propertyInfo.PropertyType) && propertyInfo.PropertyType.IsValueType) {
-                    Func<object> getDefault = Expression.Lambda<Func<object>>(
-                            Expression.Convert(Expression.Default(propertyInfo.PropertyType), typeof(object)))
-                        .Compile();
-                    object deft = getDefault();
-                    _defaultValues.TryAdd(propertyInfo.PropertyType, deft);
-                } else if (propertyInfo.PropertyType.IsValueType) {
-                    _defaultValues.TryAdd(propertyInfo.PropertyType, null);
-                }
-
-
-                _defaultValues.TryGetValue(propertyInfo.PropertyType, out object propVal);
-                _backingfields.TryAdd(propertyInfo.Name, propVal);
-                MethodInfo setter = propertyInfo.GetSetMethod();
-                MethodInfo getter = propertyInfo.GetGetMethod();
-            }
-        }
 
         /// <summary>
         ///     Called before changing a property value

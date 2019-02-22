@@ -56,6 +56,7 @@
     <Compile Include="AsyncTaskStatus.cs" />
     <Compile Include="AsyncTypes\AsyncTypes.cs" />
     <Compile Include="AsyncVMCommand.cs" />
+    <Compile Include="AttributeVMBase.cs" />
     <Compile Include="Converters\BoolToRedGreenConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\InverterConverter.cs" />

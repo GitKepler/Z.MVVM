@@ -67,7 +67,7 @@ namespace Z.MVVMHelper.Internals
         }
 
         /// <summary>
-        /// Generate an exception when a parameter is null or empty
+        ///     Generate an exception when a parameter is null or empty
         /// </summary>
         /// <param name="param"></param>
         /// <param name="function"></param>
@@ -75,11 +75,21 @@ namespace Z.MVVMHelper.Internals
         [NotNull]
         public static ArgumentException ArgumentNullOrEmpty([CanBeNull] string param,
             [NotNull] [CallerMemberName] string function = "") {
-            if (param is null) {
-                return new ArgumentException("Value cannot be null or whitespace.");
-            }
+            return param is null
+                ? new ArgumentException("Value cannot be null or whitespace.")
+                : new ArgumentException("Value cannot be null or whitespace.", param);
+        }
 
-            return new ArgumentException("Value cannot be null or whitespace.", param);
+        /// <summary>
+        ///     Generate an exception when a method is not fully implemented
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="function"></param>
+        /// <returns></returns>
+        [NotNull]
+        public static NotImplementedException Todo([CanBeNull] string value,
+            [NotNull] [CallerMemberName] string function = "") {
+            return value is null ? new NotImplementedException() : new NotImplementedException(value);
         }
     }
 }
