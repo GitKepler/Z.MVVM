@@ -12,7 +12,7 @@ namespace Z.MVVMHelper.Internals
     internal static class TaskExtensions
     {
         public static async void FireAndForget([NotNull] this Task task, [CanBeNull] IExceptionHandler handler) {
-            if (task == null) {
+            if (task is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(task));
             }
 

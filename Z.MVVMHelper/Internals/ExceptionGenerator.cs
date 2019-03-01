@@ -27,12 +27,12 @@ namespace Z.MVVMHelper.Internals
         [NotNull]
         public static ArgumentException InvalidArgumentType<TExpected>([CanBeNull] Type received,
             [CanBeNull] string param) {
-            if (param == null && received is null) {
+            if (param is null && received is null) {
                 return new ArgumentException(
                     $"The expected type ({nameof(TExpected)}) does not match the received type");
             }
 
-            if (param == null) {
+            if (param is null) {
                 return new ArgumentException(
                     $"The expected type ({nameof(TExpected)}) does not match the received type ({received.Name})");
             }

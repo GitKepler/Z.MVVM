@@ -49,7 +49,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="execute"><see cref="Action{T}" /> determining the what the command is doing</param>
         public VMCommand([NotNull] Action<TParam> execute) : this(AlwaysEnabled, execute) {
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
@@ -63,11 +63,11 @@ namespace Z.MVVMHelper
         public VMCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : this(
             _ => canExecute(),
             _ => canExecute()) {
-            if (canExecute == null) {
+            if (canExecute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
             }
 
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
@@ -78,7 +78,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="execute"><see cref="Action" /> determining the what the command is doing</param>
         public VMCommand([NotNull] Action execute) : this(AlwaysEnabled, _ => execute()) {
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
@@ -181,11 +181,11 @@ namespace Z.MVVMHelper
         public VMCommand([NotNull] Predicate<object> canExecute, [NotNull] Action<object> execute) : base(
             canExecute,
             execute) {
-            if (canExecute == null) {
+            if (canExecute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
             }
 
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
@@ -198,11 +198,11 @@ namespace Z.MVVMHelper
         public VMCommand([NotNull] Func<bool> canExecute, [NotNull] Action execute) : base(
             _ => canExecute(),
             _ => canExecute()) {
-            if (canExecute == null) {
+            if (canExecute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(canExecute));
             }
 
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
@@ -212,7 +212,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="execute"></param>
         public VMCommand([NotNull] Action execute) : base(AlwaysEnabled, _ => execute()) {
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }
@@ -222,7 +222,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="execute"></param>
         public VMCommand([NotNull] Action<object> execute) : base(execute) {
-            if (execute == null) {
+            if (execute is null) {
                 throw ExceptionGenerator.ArgumentNull(nameof(execute));
             }
         }

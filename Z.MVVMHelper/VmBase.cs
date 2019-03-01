@@ -37,7 +37,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanging([NotNull] [CallerMemberName] string propName = "") {
-            if (propName == null) {
+            if (propName is null) {
                 throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName));
             }
 
@@ -49,7 +49,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanged([NotNull] [CallerMemberName] string propName = "") {
-            if (propName == null) {
+            if (propName is null) {
                 throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName));
             }
 
