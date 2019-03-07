@@ -38,7 +38,7 @@ namespace Z.MVVMHelper
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanging([NotNull] [CallerMemberName] string propName = "") {
             if (propName is null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName));
+                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName), nameof(OnPropertyChanging));
             }
 
             DelegatePropertyChanging(propName);
@@ -50,7 +50,7 @@ namespace Z.MVVMHelper
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanged([NotNull] [CallerMemberName] string propName = "") {
             if (propName is null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName));
+                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName), nameof(OnPropertyChanged));
             }
 
             DelegatePropertyChanged(propName);
