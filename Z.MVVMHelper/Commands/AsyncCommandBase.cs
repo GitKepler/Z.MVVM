@@ -11,6 +11,9 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper.Commands
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public abstract class AsyncCommandBase : CommandBase
     {
         /// <inheritdoc />
@@ -31,11 +34,9 @@ namespace Z.MVVMHelper.Commands
         #endregion
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
         protected abstract Task RunAsynchronously([CanBeNull] object parameter);
-
     }
 }

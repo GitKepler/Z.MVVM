@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,10 @@ using Z.MVVMHelper.AsyncTypes;
 
 namespace Z.MVVMHelper.Commands
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class AsyncCommand : AsyncCommandBase
     {
         [NotNull] private readonly AsyncAction<object> _action;
@@ -22,10 +27,14 @@ namespace Z.MVVMHelper.Commands
             _action = action;
         }
 
+
+        /// <inheritdoc />
         public AsyncCommand([NotNull] AsyncAction<object> action, bool allowMultipleExecutions) : this(action, allowMultipleExecutions, AlwaysExecute) { }
 
+        /// <inheritdoc />
         public AsyncCommand([NotNull] AsyncAction action, bool allowMultipleExecutions, [NotNull] Predicate<object> canExecute) : this(_ => action(), allowMultipleExecutions, canExecute) { }
 
+        /// <inheritdoc />
         public AsyncCommand([NotNull] AsyncAction action, bool allowMultipleExecutions) : this(action, allowMultipleExecutions, AlwaysExecute) { }
 
         #region Overrides of AsyncCommandBase

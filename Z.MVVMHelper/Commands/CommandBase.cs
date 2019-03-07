@@ -31,8 +31,13 @@ namespace Z.MVVMHelper.Commands
         [NotNull] private readonly Predicate<object> _canExecute;
 
         private bool _isRunning;
+
+        /// <summary>
+        /// </summary>
         protected EventHandler<EventArgs> CommandEnded;
 
+        /// <summary>
+        /// </summary>
         protected EventHandler<EventArgs> CommandStarted;
 
         /// <summary>

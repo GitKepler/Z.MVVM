@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper.Commands
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class Command : CommandBase
     {
         [NotNull] private readonly Action<object> _action;
