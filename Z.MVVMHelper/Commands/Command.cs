@@ -16,7 +16,7 @@ namespace Z.MVVMHelper.Commands
     /// <summary>
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class Command : CommandBase
+    public class Command : SynchronousCommandBase
     {
         [NotNull] private readonly Action<object> _action;
 
@@ -38,7 +38,7 @@ namespace Z.MVVMHelper.Commands
         #region Overrides of CommandBase
 
         /// <inheritdoc />
-        protected override void Run(object parameter) {
+        protected override void RunSynchronously(object parameter) {
             _action(parameter);
         }
 
