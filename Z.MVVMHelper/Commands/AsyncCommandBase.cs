@@ -22,13 +22,22 @@ namespace Z.MVVMHelper.Commands
         #region Overrides of CommandBase
 
         /// <inheritdoc />
-        protected override async void Run([CanBeNull] object parameter) {
-            Task res = RunAsynchronously(parameter);
-            if (res is null) {
-                return;
-            }
+        protected override async void Run(object parameter) {
+            MethodStart();
+            try {
+                Task res = RunAsynchronously(parameter);
 
-            await res;
+
+                if (res is null) {
+                    return;
+                }
+
+                await res;
+            } catch (TaskCanceledException) {
+                // Canceled
+            } finally {
+                MethodEnd();
+            }
         }
 
         #endregion
