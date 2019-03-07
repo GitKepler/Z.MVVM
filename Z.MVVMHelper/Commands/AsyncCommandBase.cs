@@ -22,11 +22,10 @@ namespace Z.MVVMHelper.Commands
         #region Overrides of CommandBase
 
         /// <inheritdoc />
-        protected override async void Run(object parameter) {
+        protected override async void Run(object parameter, bool catchError) {
             MethodStart();
             try {
                 Task res = RunAsynchronously(parameter);
-
 
                 if (res is null) {
                     return;
@@ -35,6 +34,9 @@ namespace Z.MVVMHelper.Commands
                 await res;
             } catch (TaskCanceledException) {
                 // Canceled
+            } catch (Exception e) when (catchError) {
+                // Need to duplicate code from since async void does not play nicely with exceptions
+                ExceptionHandler?.HandleException(e);
             } finally {
                 MethodEnd();
             }

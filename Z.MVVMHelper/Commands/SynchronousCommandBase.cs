@@ -15,7 +15,7 @@ namespace Z.MVVMHelper.Commands
         #region Overrides of CommandBase
 
         /// <inheritdoc />
-        protected override void Run(object parameter) {
+        protected override void Run(object parameter, bool catchError) {
             MethodStart();
             try {
                 RunSynchronously(parameter);

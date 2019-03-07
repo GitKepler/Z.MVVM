@@ -78,7 +78,8 @@ namespace Z.MVVMHelper.Commands
         /// <summary>
         /// </summary>
         /// <param name="parameter"></param>
-        protected abstract void Run([CanBeNull] object parameter);
+        /// <param name="catchError"></param>
+        protected abstract void Run([CanBeNull] object parameter, bool catchError);
 
         /// <summary>
         /// </summary>
@@ -86,7 +87,7 @@ namespace Z.MVVMHelper.Commands
         /// <param name="catchError"></param>
         public void Execute([CanBeNull] object parameter, bool catchError) {
             try {
-                Run(parameter);
+                Run(parameter, catchError);
             } catch (Exception ex) when (catchError) {
                 ExceptionHandler?.HandleException(ex);
             }
