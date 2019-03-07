@@ -25,8 +25,14 @@ namespace Z.MVVMHelper.Internals
         /// <param name="argumentName">Name of the value</param>
         /// <param name="caller">Caller</param>
         public static void ArgumentNull<T>([CanBeNull] T obj, [NotNull] string argumentName, [NotNull] [CallerMemberName] string caller = "") where T : class {
-            ArgumentNull(argumentName, nameof(argumentName));
-            ArgumentNull(caller, nameof(caller));
+            ArgumentNullSingleCheck(argumentName, nameof(argumentName));
+            ArgumentNullSingleCheck(caller, nameof(caller));
+            if (obj is null) {
+                throw ExceptionGenerator.ArgumentNull(argumentName, caller);
+            }
+        }
+
+        private static void ArgumentNullSingleCheck<T>([NotNull] T obj, [NotNull] string argumentName, [NotNull] string caller = "") where T : class {
             if (obj is null) {
                 throw ExceptionGenerator.ArgumentNull(argumentName, caller);
             }
