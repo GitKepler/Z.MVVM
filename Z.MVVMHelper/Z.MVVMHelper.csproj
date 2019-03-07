@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncTypes\AsyncTypes.cs" />
+    <Compile Include="CommandRepository.cs" />
     <Compile Include="Commands\AsyncCancellableCommand.cs" />
     <Compile Include="Commands\AsyncCommand.cs" />
     <Compile Include="Commands\AsyncCommandBase.cs" />
