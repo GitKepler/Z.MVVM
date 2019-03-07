@@ -85,25 +85,24 @@ namespace Z.MVVMHelper.Commands
         /// <param name="parameter"></param>
         /// <param name="catchError"></param>
         public void Execute([CanBeNull] object parameter, bool catchError) {
-            MethodStart();
             try {
                 Run(parameter);
             } catch (Exception ex) when (catchError) {
                 ExceptionHandler?.HandleException(ex);
-            } finally {
-                MethodEnd();
             }
         }
 
-        private void MethodStart() {
+        protected void MethodStart() {
             lock (Locker) {
+                TriggerCommandStarted();
                 IsRunning = true;
                 Refresh();
             }
         }
 
-        private void MethodEnd() {
+        protected void MethodEnd() {
             lock (Locker) {
+                TriggerCommandEnded();
                 IsRunning = false;
                 Refresh();
             }
