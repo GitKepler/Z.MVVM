@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -37,10 +38,6 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanging([NotNull] [CallerMemberName] string propName = "") {
-            if (propName is null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName), nameof(OnPropertyChanging));
-            }
-
             DelegatePropertyChanging(propName);
         }
 
@@ -49,10 +46,6 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The name of the property</param>
         protected void OnPropertyChanged([NotNull] [CallerMemberName] string propName = "") {
-            if (propName is null) {
-                throw Internals.ExceptionGenerator.ArgumentNull(nameof(propName), nameof(OnPropertyChanged));
-            }
-
             DelegatePropertyChanged(propName);
         }
 
@@ -80,9 +73,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The property being changed</param>
         protected void DelegatePropertyChanging([CanBeNull] string propName) {
-            if (string.IsNullOrWhiteSpace(propName)) {
-                throw Internals.ExceptionGenerator.ArgumentNullOrEmpty( nameof(propName));
-            }
+            ValueValidator.ArgumentNull(propName, nameof(propName));
 
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propName));
         }
@@ -92,9 +83,7 @@ namespace Z.MVVMHelper
         /// </summary>
         /// <param name="propName">The property after the changes has been made</param>
         protected void DelegatePropertyChanged([CanBeNull] string propName) {
-            if (string.IsNullOrWhiteSpace(propName)) {
-                throw Internals.ExceptionGenerator.ArgumentNullOrEmpty( nameof(propName));
-            }
+            ValueValidator.ArgumentNull(propName, nameof(propName));
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
