@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$</version>
+    <version>1.1.0.0</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -14,12 +14,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Debug\*.dll" target="lib\Debug" />
-    <file src="bin\Debug\*.pdb" target="lib\Debug" />
-    <file src="bin\Debug\*.xml" target="lib\Debug" />
-
-    <file src="bin\Release\*.dll" target="lib\Release" />
-    <file src="bin\Release\*.pdb" target="lib\Release" />
-    <file src="bin\Release\*.xml" target="lib\Release" />
+    <file src="bin\Release\Z.MVVMHelper.dll" target="lib\net472" />
+    <file src="bin\Release\Z.MVVMHelper.pdb" target="lib\net472" />
+    <file src="bin\Release\Z.MVVMHelper.xml" target="lib\net472" />
   </files>
 </package>
