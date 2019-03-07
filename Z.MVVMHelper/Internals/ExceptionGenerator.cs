@@ -56,10 +56,9 @@ namespace Z.MVVMHelper.Internals
         /// <returns></returns>
         [NotNull]
         public static ArgumentNullException ArgumentNull([NotNull] string param,
-            [NotNull] [CallerMemberName] string function = "") {
-            if (param is null) {
-                throw ArgumentNull(nameof(param));
-            }
+            [NotNull] string function) {
+            ValueValidator.ArgumentNull(param, nameof(param));
+            ValueValidator.ArgumentNull(function, nameof(function));
 
             return new ArgumentNullException(
                 param,

@@ -22,9 +22,14 @@ namespace Z.MVVMHelper.Interfaces
     public interface ICommand : System.Windows.Input.ICommand
     {
         /// <summary>
-        ///     Whether the command is enabled or not
+        /// If the command is running
         /// </summary>
-        bool IsEnabled { get; set; }
+        bool IsRunning { get; }
+
+        /// <summary>
+        /// If a command can be run multiple times simultaneously
+        /// </summary>
+        bool AllowMultipleExecutions { get; }
 
         /// <summary>
         ///     The exception handler of the command
