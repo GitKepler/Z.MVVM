@@ -8,7 +8,6 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release.</releaseNotes>
     <copyright>Copyright $author$ 2019</copyright>
     <dependencies>
       <dependency id="JetBrains.Annotations" version="2018.2.1"></dependency>
