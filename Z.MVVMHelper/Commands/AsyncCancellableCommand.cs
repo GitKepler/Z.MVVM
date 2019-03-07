@@ -42,7 +42,7 @@ namespace Z.MVVMHelper.Commands
         [CanBeNull] private CancellationTokenSource _cancelSource;
 
         /// <summary>
-        /// 
+        /// Cancel a command if it is running
         /// </summary>
         public void Cancel() {
             _cancelSource?.Cancel();

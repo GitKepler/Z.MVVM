@@ -7,10 +7,13 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper.Commands
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public abstract class SynchronousCommandBase : CommandBase
     {
         /// <inheritdoc />
-        public SynchronousCommandBase([NotNull] Predicate<object> canExecute) : base(canExecute) { }
+        protected SynchronousCommandBase([NotNull] Predicate<object> canExecute) : base(canExecute) { }
 
         #region Overrides of CommandBase
 
@@ -25,7 +28,7 @@ namespace Z.MVVMHelper.Commands
         }
 
         /// <summary>
-        /// 
+        /// Content of the method to run
         /// </summary>
         /// <param name="parameter"></param>
         protected abstract void RunSynchronously([CanBeNull] object parameter);

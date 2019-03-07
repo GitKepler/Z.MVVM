@@ -33,10 +33,12 @@ namespace Z.MVVMHelper.Commands
         private bool _isRunning;
 
         /// <summary>
+        ///     Event triggered when the execution of a command finishes
         /// </summary>
         protected EventHandler<EventArgs> CommandEnded;
 
         /// <summary>
+        ///     Event triggered when the execution of a command start
         /// </summary>
         protected EventHandler<EventArgs> CommandStarted;
 
@@ -53,6 +55,7 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         /// <summary>
+        ///     Check whether a command can be run multiple times in parallel
         /// </summary>
         public bool AllowMultipleExecutions { get; protected set; }
 
@@ -70,21 +73,24 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         /// <summary>
+        ///     Refresh the <see cref="CommandBase" /> Enabled status
         /// </summary>
         public void Refresh() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
+        ///     Content of the command to run
         /// </summary>
         /// <param name="parameter"></param>
-        /// <param name="catchError"></param>
+        /// <param name="catchError">If the errors needs to be thrown or not</param>
         protected abstract void Run([CanBeNull] object parameter, bool catchError);
 
         /// <summary>
+        ///     Execute the method from user code
         /// </summary>
-        /// <param name="parameter"></param>
-        /// <param name="catchError"></param>
+        /// <param name="parameter">The arguments if the method takes any</param>
+        /// <param name="catchError">If the errors needs to be thrown or not</param>
         public void Execute([CanBeNull] object parameter, bool catchError) {
             try {
                 Run(parameter, catchError);
@@ -93,6 +99,9 @@ namespace Z.MVVMHelper.Commands
             }
         }
 
+        /// <summary>
+        ///     To execute before the beginning of the method
+        /// </summary>
         protected void MethodStart() {
             lock (Locker) {
                 TriggerCommandStarted();
@@ -101,6 +110,9 @@ namespace Z.MVVMHelper.Commands
             }
         }
 
+        /// <summary>
+        ///     To execute after the end of the method (preferably in a finally block)
+        /// </summary>
         protected void MethodEnd() {
             lock (Locker) {
                 TriggerCommandEnded();
@@ -109,15 +121,11 @@ namespace Z.MVVMHelper.Commands
             }
         }
 
-        /// <summary>
-        /// </summary>
-        protected void TriggerCommandStarted() {
+        private void TriggerCommandStarted() {
             CommandStarted?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// </summary>
-        protected void TriggerCommandEnded() {
+        private void TriggerCommandEnded() {
             CommandEnded?.Invoke(this, EventArgs.Empty);
         }
 

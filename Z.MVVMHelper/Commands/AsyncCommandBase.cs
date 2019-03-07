@@ -45,6 +45,7 @@ namespace Z.MVVMHelper.Commands
         #endregion
 
         /// <summary>
+        /// Content of the method to run
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
