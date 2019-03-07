@@ -27,8 +27,7 @@ namespace Z.MVVMHelper.Converters
         #region Implementation of IValueConverter
 
         /// <inheritdoc />
-        public object Convert(object value, [CanBeNull] Type targetType, object parameter,
-            [CanBeNull] CultureInfo culture) {
+        public object Convert(object value, [CanBeNull] Type targetType, object parameter, [CanBeNull] CultureInfo culture) {
             if (value is bool b) {
                 return b ? Brushes.Green : Brushes.Red;
             }
@@ -37,8 +36,7 @@ namespace Z.MVVMHelper.Converters
         }
 
         /// <inheritdoc />
-        public object ConvertBack(object value, [CanBeNull] Type targetType, object parameter,
-            [CanBeNull] CultureInfo culture) {
+        public object ConvertBack(object value, [CanBeNull] Type targetType, object parameter, [CanBeNull] CultureInfo culture) {
             if (value is Brush b) {
                 return b == Brushes.Green;
             }

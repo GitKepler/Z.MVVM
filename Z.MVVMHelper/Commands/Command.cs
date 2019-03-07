@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -22,6 +23,7 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         public Command([NotNull] Action<object> action, bool allowMultipleExecutions, [NotNull] Predicate<object> canExecute) : base(canExecute) {
+            ValueValidator.ArgumentNull(action, nameof(action));
             _action = action;
             AllowMultipleExecutions = allowMultipleExecutions;
         }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Z.MVVMHelper.AsyncTypes;
+using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -23,6 +24,7 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         public AsyncCommand([NotNull] AsyncAction<object> action, bool allowMultipleExecutions, [NotNull] Predicate<object> canExecute) : base(canExecute) {
+            ValueValidator.ArgumentNull(action, nameof(action));
             AllowMultipleExecutions = allowMultipleExecutions;
             _action = action;
         }

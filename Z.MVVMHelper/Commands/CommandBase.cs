@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Interfaces;
+using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -46,9 +47,7 @@ namespace Z.MVVMHelper.Commands
         /// </summary>
         /// <param name="canExecute"><see cref="Predicate{T}" /> checking whether the <see cref="CommandBase" /> can be run</param>
         protected CommandBase([NotNull] Predicate<object> canExecute) {
-            if (canExecute is null) {
-                throw new ArgumentNullException(nameof(canExecute));
-            }
+            ValueValidator.ArgumentNull(canExecute, nameof(canExecute));
 
             _canExecute = canExecute;
         }

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Z.MVVMHelper.AsyncTypes;
+using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -22,6 +23,7 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         public AsyncCancellableCommand([NotNull] CancellableAction<object> action, [NotNull] Predicate<object> canExecute) : base(canExecute) {
+            ValueValidator.ArgumentNull(action, nameof(action));
             AllowMultipleExecutions = false;
             _action = action;
             CommandStarted += (sender, args) => _cancelSource = new CancellationTokenSource();

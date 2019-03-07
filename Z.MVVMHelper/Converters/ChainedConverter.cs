@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using JetBrains.Annotations;
 
-#endregion USINGS
+#endregion
 
 namespace Z.MVVMHelper.Converters
 {
@@ -23,17 +23,13 @@ namespace Z.MVVMHelper.Converters
         #region Implementation of IValueConverter
 
         /// <inheritdoc />
-        public object Convert(object value, [CanBeNull] Type targetType, object parameter,
-            [CanBeNull] CultureInfo culture)
-        {
+        public object Convert(object value, [CanBeNull] Type targetType, object parameter, [CanBeNull] CultureInfo culture) {
             return this.Where(c => !(c is null))
                 .Aggregate(value, (b, n) => n.Convert(b, targetType, parameter, culture));
         }
 
         /// <inheritdoc />
-        public object ConvertBack(object value, [CanBeNull] Type targetType, object parameter,
-            [CanBeNull] CultureInfo culture)
-        {
+        public object ConvertBack(object value, [CanBeNull] Type targetType, object parameter, [CanBeNull] CultureInfo culture) {
             return this.AsEnumerable()
                 ?.Where(c => !(c is null))
                 .Reverse()
