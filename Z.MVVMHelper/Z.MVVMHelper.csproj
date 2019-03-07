@@ -66,7 +66,6 @@
     <Compile Include="Interfaces\IExceptionHandler.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Internals\ExceptionGenerator.cs" />
-    <Compile Include="Internals\TaskExtensions.cs" />
     <Compile Include="Internals\ValueValidator.cs" />
     <Compile Include="VMBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
