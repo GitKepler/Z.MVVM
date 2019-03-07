@@ -58,6 +58,7 @@
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\SynchronousCommandBase.cs" />
     <Compile Include="Converters\BoolToRedGreenConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ChainedConverter.cs" />
