@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Security.Permissions;
@@ -14,6 +15,7 @@ using JetBrains.Annotations;
 namespace Z.MVVMHelper.Validation
 {
     /// <inheritdoc />
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class ParseableValidationAttribute : BaseValidationAttribute
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace Z.MVVMHelper.Validation
             SByte = (1 << 8) + 8,
             Double = (3 << 8) + 64,
             Single = (3 << 8) + 32,
-            Decimal = 3 << 8,
+            Decimal = (3 << 8) + 128,
             Short = Int16,
             Int = Int32,
             Long = Int64,
