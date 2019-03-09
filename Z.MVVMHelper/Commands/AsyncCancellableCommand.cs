@@ -50,6 +50,22 @@ namespace Z.MVVMHelper.Commands
             _cancelSource?.Cancel();
         }
 
+        /// <summary>
+        /// Generate a <see cref="Command"/> to cancel this <see cref="AsyncCancellableCommand"/>
+        /// </summary>
+        /// <returns>The command</returns>
+        [NotNull]
+        public Command GenerateCancelCommand() {
+            var command = new Command(Cancel, false, _ => IsRunning);
+            PropertyChanged += (sender, args) =>
+            {
+                if (args?.PropertyName == nameof(IsRunning)) {
+                    command.Refresh();
+                }
+            };
+            return command;
+        }
+
         /// <inheritdoc />
         protected override async Task RunAsynchronously(object parameter) {
             await _action(_cancelSource.Token, parameter);
