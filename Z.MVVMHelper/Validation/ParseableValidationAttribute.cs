@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
@@ -12,6 +13,7 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper.Validation
 {
+    /// <inheritdoc />
     public class ParseableValidationAttribute : BaseValidationAttribute
     {
         /// <summary>
@@ -42,7 +44,7 @@ namespace Z.MVVMHelper.Validation
         }
 
         /// <inheritdoc />
-        public ParseableValidationAttribute([NotNull] string propertyName, ParserTarget target) : base(propertyName) {
+        public ParseableValidationAttribute([NotNull] string propertyName, ParserTarget target, [NotNull] CultureInfo culture) : base(propertyName) {
             switch (target) {
                 case ParserTarget.Int8:
                     ErrorGenerator = o =>
@@ -50,7 +52,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return sbyte.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return sbyte.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -62,7 +64,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return short.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return short.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -74,7 +76,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return int.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return int.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -86,7 +88,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return long.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return long.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -98,7 +100,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return byte.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return byte.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -110,7 +112,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return ushort.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return ushort.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -122,7 +124,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return uint.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return uint.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -134,7 +136,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return ulong.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return ulong.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -146,7 +148,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return float.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return float.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -158,7 +160,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return double.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return double.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -170,7 +172,7 @@ namespace Z.MVVMHelper.Validation
                         string val = PreprocessValue<string>(o);
                         if (val is null) {
                             var s = (string) o;
-                            return decimal.TryParse(s, out _) ? string.Empty : $"Incorrect format for {target}";
+                            return decimal.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -178,6 +180,9 @@ namespace Z.MVVMHelper.Validation
                     break;
             }
         }
+
+        /// <inheritdoc />
+        public ParseableValidationAttribute([NotNull] string propertyName, ParserTarget target) : this(propertyName, target, CultureInfo.CurrentCulture) { }
 
         #region Overrides of BaseValidationAttribute
 
