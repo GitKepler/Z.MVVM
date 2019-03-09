@@ -19,9 +19,15 @@ namespace Z.MVVMHelper
     /// </summary>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    // ReSharper disable once InconsistentNaming
     public abstract partial class VmBase
     {
+        /// <summary>
+        ///     Constructor for <see cref="VmBase" />
+        /// </summary>
+        protected VmBase() {
+            InitializeDataValidator();
+        }
+
         /// <summary>
         ///     Automate calls to <see cref="OnPropertyChanging" /> and <see cref="OnPropertyChanged" />
         /// </summary>
