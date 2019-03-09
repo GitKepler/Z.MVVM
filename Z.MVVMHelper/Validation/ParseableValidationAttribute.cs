@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 
 namespace Z.MVVMHelper.Validation
 {
-    public class ParseableValidationError : BaseValidationAttribute
+    public class ParseableValidationAttribute : BaseValidationAttribute
     {
         /// <summary>
         /// </summary>
@@ -42,7 +42,7 @@ namespace Z.MVVMHelper.Validation
         }
 
         /// <inheritdoc />
-        public ParseableValidationError([NotNull] string propertyName, ParserTarget target) : base(propertyName) {
+        public ParseableValidationAttribute([NotNull] string propertyName, ParserTarget target) : base(propertyName) {
             switch (target) {
                 case ParserTarget.Int8:
                     ErrorGenerator = o =>

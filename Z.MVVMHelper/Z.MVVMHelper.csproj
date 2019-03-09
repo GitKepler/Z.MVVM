@@ -71,7 +71,7 @@
     <Compile Include="Internals\ValueValidator.cs" />
     <Compile Include="Validation\BaseValidationAttribute.cs" />
     <Compile Include="Validation\CustomValidationAttribute.cs" />
-    <Compile Include="Validation\ParseableValidationError.cs" />
+    <Compile Include="Validation\ParseableValidationAttribute.cs" />
     <Compile Include="Validation\RegexValidationAttribute.cs" />
     <Compile Include="VmBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
