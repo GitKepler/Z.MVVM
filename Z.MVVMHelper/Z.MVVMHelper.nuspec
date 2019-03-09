@@ -9,9 +9,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright $author$ 2019</copyright>
-    <dependencies>
-      <dependency id="JetBrains.Annotations" version="2018.2.1"></dependency>
-    </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\Z.MVVMHelper.dll" target="lib\net472" />
