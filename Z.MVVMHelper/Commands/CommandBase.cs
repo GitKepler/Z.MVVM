@@ -110,8 +110,7 @@ namespace Z.MVVMHelper.Commands
         }
 
         private void PropertyBindingValueModified([NotNull] object sender, [NotNull] PropertyChangedEventArgs e) {
-            List<string> props = _propertiesBindings[(VmBase) sender];
-            if (props?.Contains(e.PropertyName) ?? false) {
+            if (e.PropertyName == nameof(Error)) {
                 Refresh();
             }
         }

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Z.MVVMHelper
         private ConcurrentDictionary<string, string> ValidationErrors { get; } = new ConcurrentDictionary<string, string>();
 
         /// <summary>
-        /// Validation Errors
+        ///     Validation Errors
         /// </summary>
         [NotNull]
         public IReadOnlyDictionary<string, string> Errors => ValidationErrors;
