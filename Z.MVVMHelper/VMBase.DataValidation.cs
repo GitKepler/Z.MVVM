@@ -73,7 +73,7 @@ namespace Z.MVVMHelper
                     .ToString()
                     .Trim();
                 ValidationErrors.AddOrUpdate(columnName, errors, (s, s1) => errors);
-                Error = string.Join(Environment.NewLine, ValidationErrors.ToArray().Select(kvp => $"[{kvp.Key}]{Environment.NewLine}{kvp.Value}"));
+                Error = string.Join(Environment.NewLine, ValidationErrors.ToArray().Where(kvp => !string.IsNullOrWhiteSpace(kvp.Value)).Select(kvp => $"[{kvp.Key}]{Environment.NewLine}{kvp.Value}"));
                 return errors;
             }
         }
