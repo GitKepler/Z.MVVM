@@ -19,10 +19,11 @@ namespace Z.MVVMHelper.Validation
     /// <summary>
     ///     Regex validation rule
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public sealed class RegexValidationAttribute : Attribute, IValidatorAttribute
+    public sealed class RegexValidationAttribute : BaseValidationAttribute
     {
+        [NotNull] private readonly Regex _regex;
+
         /// <inheritdoc />
         /// <summary>
         ///     Create a regex validation rule with a custom error generator
@@ -30,13 +31,11 @@ namespace Z.MVVMHelper.Validation
         /// <param name="propertyName">Name of the property</param>
         /// <param name="regex">Regex to match</param>
         /// <param name="errorGenerator">Error generator</param>
-        public RegexValidationAttribute([NotNull] string propertyName, [NotNull] string regex, [NotNull] Func<string, string> errorGenerator) {
+        public RegexValidationAttribute([NotNull] string propertyName, [NotNull] string regex, [NotNull] Func<string, string> errorGenerator) : base(propertyName) {
             ValueValidator.ArgumentNull(regex, nameof(regex));
-            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
             ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
-            var regex1 = new Regex(regex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            ErrorGenerator = ValidateRegex(errorGenerator, regex1, propertyName);
-            PropertyName = propertyName;
+            _regex = new Regex(regex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
+            ErrorGenerator = ValidateRegex(errorGenerator, propertyName);
         }
 
         /// <inheritdoc />
@@ -45,46 +44,32 @@ namespace Z.MVVMHelper.Validation
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="regex"></param>
-        public RegexValidationAttribute([NotNull] string propertyName, [NotNull] string regex) {
+        public RegexValidationAttribute([NotNull] string propertyName, [NotNull] string regex) : base(propertyName) {
             ValueValidator.ArgumentNull(regex, nameof(regex));
-            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
-            var regex1 = new Regex(regex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            ErrorGenerator = ValidateRegex(s => $"\"{s}\" is not a valid value for {propertyName}", regex1, propertyName);
-            PropertyName = propertyName;
+            _regex = new Regex(regex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
+            ErrorGenerator = ValidateRegex(s => $"\"{s}\" is not a valid value for {propertyName}", propertyName);
         }
 
-        /// <summary>
-        ///     Allow null values
-        /// </summary>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-        public bool AllowNull { get; set; }
+        #region Overrides of BaseValidationAttribute
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Error string generator
-        /// </summary>
-        public Func<object, string> ErrorGenerator { get; }
+        public override Func<object, string> ErrorGenerator { get; }
 
-        /// <inheritdoc />
-        public string PropertyName { get; }
+        #endregion
 
         [NotNull]
-        private Func<object, string> ValidateRegex([NotNull] Func<string, string> errorGenerator, [NotNull] Regex regex1, [NotNull] string propertyName) {
-            ValueValidator.ArgumentNull(regex1, nameof(regex1));
+        private Func<object, string> ValidateRegex([NotNull] Func<string, string> errorGenerator, [NotNull] string propertyName) {
             ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
             ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
             return o =>
             {
-                if (o is null) {
-                    return AllowNull ? string.Empty : $"Value of {propertyName} cannot be null";
+                var prep = PreprocessValue<string>(o);
+                if (prep is null) {
+                    var s = (string) o;
+                    return _regex.IsMatch(s ?? string.Empty) ? string.Empty : errorGenerator(s);
                 }
 
-                if (!(o is string s)) {
-                    throw ExceptionGenerator.InvalidArgumentType<string>(o?.GetType(), "o");
-                }
-
-                return regex1.IsMatch(s) ? string.Empty : errorGenerator(s);
+                return prep;
             };
         }
     }
