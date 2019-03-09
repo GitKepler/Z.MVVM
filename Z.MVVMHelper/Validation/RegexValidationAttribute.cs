@@ -39,21 +39,6 @@ namespace Z.MVVMHelper.Validation
             PropertyName = propertyName;
         }
 
-        [NotNull]
-        private Func<object, string> ValidateRegex([NotNull] Func<string, string> errorGenerator, [NotNull] Regex regex1, [NotNull] string propertyName) {
-            ValueValidator.ArgumentNull(regex1, nameof(regex1));
-            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
-            ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
-            return o =>
-            {
-                if (!(o is string s)) {
-                    throw ExceptionGenerator.InvalidArgumentType<string>(o?.GetType(), "o");
-                }
-
-                return regex1.IsMatch(s) ? string.Empty : errorGenerator(s);
-            };
-        }
-
         /// <inheritdoc />
         /// <summary>
         ///     Create a regex validation rule
@@ -68,6 +53,13 @@ namespace Z.MVVMHelper.Validation
             PropertyName = propertyName;
         }
 
+        /// <summary>
+        ///     Allow null values
+        /// </summary>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public bool AllowNull { get; set; }
+
         /// <inheritdoc />
         /// <summary>
         ///     Error string generator
@@ -76,5 +68,24 @@ namespace Z.MVVMHelper.Validation
 
         /// <inheritdoc />
         public string PropertyName { get; }
+
+        [NotNull]
+        private Func<object, string> ValidateRegex([NotNull] Func<string, string> errorGenerator, [NotNull] Regex regex1, [NotNull] string propertyName) {
+            ValueValidator.ArgumentNull(regex1, nameof(regex1));
+            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
+            ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
+            return o =>
+            {
+                if (o is null) {
+                    return AllowNull ? string.Empty : $"Value of {propertyName} cannot be null";
+                }
+
+                if (!(o is string s)) {
+                    throw ExceptionGenerator.InvalidArgumentType<string>(o?.GetType(), "o");
+                }
+
+                return regex1.IsMatch(s) ? string.Empty : errorGenerator(s);
+            };
+        }
     }
 }
