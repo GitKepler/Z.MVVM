@@ -1,12 +1,15 @@
 ﻿#region USINGS
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Interfaces;
 using Z.MVVMHelper.Internals;
@@ -30,6 +33,8 @@ namespace Z.MVVMHelper.Commands
         [NotNull] public static readonly Predicate<object> AlwaysExecute = _ => true;
 
         [NotNull] private readonly Predicate<object> _canExecute;
+
+        [NotNull] private readonly ConcurrentDictionary<VmBase, List<string>> _propertiesBindings = new ConcurrentDictionary<VmBase, List<string>>();
 
         private bool _isRunning;
 
@@ -76,6 +81,61 @@ namespace Z.MVVMHelper.Commands
         /// </summary>
         public void Refresh() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        ///     Add a binding to a property
+        /// </summary>
+        /// <typeparam name="TVm"></typeparam>
+        /// <param name="viewmodel"></param>
+        /// <param name="propertyPath"></param>
+        public void BindToProperty<TVm>([NotNull] TVm viewmodel, [NotNull] string propertyPath) where TVm : VmBase {
+            ValueValidator.ArgumentNull(viewmodel, nameof(viewmodel));
+            ValueValidator.ArgumentNull(propertyPath, nameof(propertyPath));
+            if (!_propertiesBindings.ContainsKey(viewmodel)) {
+                viewmodel.PropertyChanged += PropertyBindingValueModified;
+            }
+
+            _propertiesBindings.AddOrUpdate(
+                viewmodel,
+                new List<string> {propertyPath},
+                (vm, list) =>
+                {
+                    if (!(list?.Contains(propertyPath) ?? true)) {
+                        list.Add(propertyPath);
+                    }
+
+                    return list;
+                });
+        }
+
+        private void PropertyBindingValueModified([NotNull] object sender, [NotNull] PropertyChangedEventArgs e) {
+            List<string> props = _propertiesBindings[(VmBase) sender];
+            if (props?.Contains(e.PropertyName) ?? false) {
+                Refresh();
+            }
+        }
+
+        /// <summary>
+        ///     Remove a binding to a property
+        /// </summary>
+        /// <typeparam name="TVm"></typeparam>
+        /// <param name="viewmodel"></param>
+        /// <param name="propertyPath"></param>
+        public void RemoveBindingToProperty<TVm>([NotNull] TVm viewmodel, [NotNull] string propertyPath) where TVm : VmBase {
+            ValueValidator.ArgumentNull(viewmodel, nameof(viewmodel));
+            ValueValidator.ArgumentNull(propertyPath, nameof(propertyPath));
+            _propertiesBindings.AddOrUpdate(
+                viewmodel,
+                new List<string>(),
+                (vm, list) =>
+                {
+                    if (list?.Contains(propertyPath) ?? false) {
+                        list.RemoveAll(p => p == propertyPath);
+                    }
+
+                    return list;
+                });
         }
 
         /// <summary>
@@ -132,7 +192,25 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         public bool CanExecute([CanBeNull] object parameter) {
-            return _canExecute(parameter) && (!IsRunning || AllowMultipleExecutions);
+            var normal = _canExecute(parameter) && (!IsRunning || AllowMultipleExecutions);
+            foreach (KeyValuePair<VmBase, List<string>> propertiesBinding in _propertiesBindings) {
+                if (propertiesBinding.Value is null) {
+                    continue;
+                }
+
+                foreach (string s in propertiesBinding.Value) {
+                    normal &= string.IsNullOrWhiteSpace(propertiesBinding.Key?.Errors[s]);
+                    if (!normal) {
+                        break;
+                    }
+                }
+
+                if (!normal) {
+                    break;
+                }
+            }
+
+            return normal;
         }
 
         /// <summary>
