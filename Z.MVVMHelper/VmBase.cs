@@ -1,6 +1,7 @@
 ﻿#region USINGS
 
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -49,6 +50,10 @@ namespace Z.MVVMHelper
         [SuppressMessage("ReSharper", "RedundantAssignment")]
         protected void EditProperty<T>([CanBeNull] ref T backingField, [CanBeNull] T newValue,
             [NotNull] [CallerMemberName] string propName = "") {
+            if (backingField?.Equals(newValue) ?? false) {
+                return;
+            }
+
             DelegatePropertyChanging(propName);
             backingField = newValue;
             DelegatePropertyChanged(propName);
