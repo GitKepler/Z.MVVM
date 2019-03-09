@@ -35,8 +35,23 @@ namespace Z.MVVMHelper.Validation
             ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
             ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
             var regex1 = new Regex(regex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            ErrorGenerator = s => !(s?.ToString() is null) && regex1.IsMatch(s?.ToString() ?? string.Empty) ? string.Empty : errorGenerator.Invoke(s?.ToString()) ?? $"\"{s}\" is not a valid value for {propertyName}";
+            ErrorGenerator = ValidateRegex(errorGenerator, regex1, propertyName);
             PropertyName = propertyName;
+        }
+
+        [NotNull]
+        private Func<object, string> ValidateRegex([NotNull] Func<string, string> errorGenerator, [NotNull] Regex regex1, [NotNull] string propertyName) {
+            ValueValidator.ArgumentNull(regex1, nameof(regex1));
+            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
+            ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
+            return o =>
+            {
+                if (!(o is string s)) {
+                    throw ExceptionGenerator.InvalidArgumentType<string>(o?.GetType(), "o");
+                }
+
+                return regex1.IsMatch(s) ? string.Empty : errorGenerator(s);
+            };
         }
 
         /// <inheritdoc />
@@ -49,7 +64,7 @@ namespace Z.MVVMHelper.Validation
             ValueValidator.ArgumentNull(regex, nameof(regex));
             ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
             var regex1 = new Regex(regex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            ErrorGenerator = s => !(s?.ToString() is null) && regex1.IsMatch(s?.ToString() ?? string.Empty) ? string.Empty : $"\"{s}\" is not a valid value for {propertyName}";
+            ErrorGenerator = ValidateRegex(s => $"\"{s}\" is not a valid value for {propertyName}", regex1, propertyName);
             PropertyName = propertyName;
         }
 
