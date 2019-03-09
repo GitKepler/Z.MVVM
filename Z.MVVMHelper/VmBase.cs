@@ -24,9 +24,16 @@ namespace Z.MVVMHelper
         /// <summary>
         ///     Constructor for <see cref="VmBase" />
         /// </summary>
-        protected VmBase() {
-            InitializeDataValidator();
+        protected VmBase(bool useAttributes) {
+            if (useAttributes) {
+                InitializeDataValidator();
+            }
         }
+
+        /// <summary>
+        ///     Constructor for <see cref="VmBase" />
+        /// </summary>
+        protected VmBase() : this(true) { }
 
         /// <summary>
         ///     Automate calls to <see cref="OnPropertyChanging" /> and <see cref="OnPropertyChanged" />
