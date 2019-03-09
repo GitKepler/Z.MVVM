@@ -37,5 +37,15 @@ namespace Z.MVVMHelper.Internals
                 throw ExceptionGenerator.ArgumentNull(argumentName, caller);
             }
         }
+
+        public static void ArgumentType<TExpected, T>([CanBeNull] T obj, [NotNull] string argumentName, [NotNull] [CallerMemberName] string caller = "") {
+            ArgumentNull(argumentName, nameof(argumentName));
+            ArgumentNull(caller, nameof(caller));
+            if (obj is TExpected) {
+                return;
+            }
+
+            throw ExceptionGenerator.InvalidArgumentType<TExpected>(obj?.GetType(), argumentName);
+        }
     }
 }
