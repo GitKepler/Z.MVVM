@@ -19,8 +19,20 @@ namespace Z.MVVMHelper
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     // ReSharper disable once InconsistentNaming
-    public abstract class VMBase : INotifyPropertyChanged, INotifyPropertyChanging
+    public abstract class VMBase : INotifyPropertyChanged, INotifyPropertyChanging, IDataErrorInfo
     {
+        /// <summary>
+        /// Validation errors
+        /// </summary>
+        public string Error => throw new NotImplementedException();
+
+        /// <summary>
+        /// Validation errors by members
+        /// </summary>
+        /// <param name="columnName">Name of the member</param>
+        /// <returns></returns>
+        public string this[string columnName] => throw new NotImplementedException();
+
         /// <inheritdoc />
         /// <summary>
         ///     When a property is changed
