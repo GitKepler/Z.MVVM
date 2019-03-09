@@ -1,6 +1,7 @@
 ﻿#region USINGS
 
 using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -19,48 +20,8 @@ namespace Z.MVVMHelper
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     // ReSharper disable once InconsistentNaming
-    public abstract class VMBase : INotifyPropertyChanged, INotifyPropertyChanging, IDataErrorInfo
+    public abstract partial class VmBase
     {
-        /// <summary>
-        /// Validation errors
-        /// </summary>
-        public string Error => throw new NotImplementedException();
-
-        /// <summary>
-        /// Validation errors by members
-        /// </summary>
-        /// <param name="columnName">Name of the member</param>
-        /// <returns></returns>
-        public string this[string columnName] => throw new NotImplementedException();
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     When a property is changed
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     When a property is changing
-        /// </summary>
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        /// <summary>
-        ///     Called before changing a property value
-        /// </summary>
-        /// <param name="propName">The name of the property</param>
-        protected void OnPropertyChanging([NotNull] [CallerMemberName] string propName = "") {
-            DelegatePropertyChanging(propName);
-        }
-
-        /// <summary>
-        ///     Called after changing a property value
-        /// </summary>
-        /// <param name="propName">The name of the property</param>
-        protected void OnPropertyChanged([NotNull] [CallerMemberName] string propName = "") {
-            DelegatePropertyChanged(propName);
-        }
-
         /// <summary>
         ///     Automate calls to <see cref="OnPropertyChanging" /> and <see cref="OnPropertyChanged" />
         /// </summary>
@@ -78,26 +39,6 @@ namespace Z.MVVMHelper
             DelegatePropertyChanging(propName);
             backingField = newValue;
             DelegatePropertyChanged(propName);
-        }
-
-        /// <summary>
-        ///     Delegate a call to <see cref="PropertyChanging" />
-        /// </summary>
-        /// <param name="propName">The property being changed</param>
-        protected void DelegatePropertyChanging([CanBeNull] string propName) {
-            ValueValidator.ArgumentNull(propName, nameof(propName));
-
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propName));
-        }
-
-        /// <summary>
-        ///     Delegate a call to <see cref="PropertyChanged" />
-        /// </summary>
-        /// <param name="propName">The property after the changes has been made</param>
-        protected void DelegatePropertyChanged([CanBeNull] string propName) {
-            ValueValidator.ArgumentNull(propName, nameof(propName));
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

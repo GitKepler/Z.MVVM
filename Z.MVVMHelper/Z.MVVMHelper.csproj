@@ -68,8 +68,17 @@
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Internals\ExceptionGenerator.cs" />
     <Compile Include="Internals\ValueValidator.cs" />
-    <Compile Include="VMBase.cs" />
+    <Compile Include="VmBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VmBase.DataValidation.cs">
+      <DependentUpon>VmBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VmBase.PropertyChanged.cs.cs">
+      <DependentUpon>VmBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VmBase.PropertyChanging.cs">
+      <DependentUpon>VmBase.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

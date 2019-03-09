@@ -22,7 +22,7 @@ namespace Z.MVVMHelper.Commands
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
-    public abstract class CommandBase : VMBase, ICommand
+    public abstract class CommandBase : VmBase, ICommand
     {
         /// <summary>
         ///     Predicate to ensure a <see cref="CommandBase" /> or any derived class is always enabled
