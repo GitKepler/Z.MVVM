@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Z.MVVMHelper.Interfaces;
+using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -24,7 +25,7 @@ namespace Z.MVVMHelper
         private ConcurrentDictionary<string, string> ValidationErrors { get; } = new ConcurrentDictionary<string, string>();
 
         [NotNull]
-        private ConcurrentDictionary<string, List<IValidatorAttribute>> ValidationAttributes { get; } = new ConcurrentDictionary<string, List<IValidatorAttribute>>();
+        private ConcurrentDictionary<string, List<IValidator>> ValidationAttributes { get; } = new ConcurrentDictionary<string, List<IValidator>>();
 
         /// <summary>
         ///     If the VM is valid
@@ -55,13 +56,13 @@ namespace Z.MVVMHelper
         public string this[[CanBeNull] string columnName] {
             get {
                 if (columnName is null) {
-                    foreach (KeyValuePair<string, List<IValidatorAttribute>> validationAttribute in ValidationAttributes) {
+                    foreach (KeyValuePair<string, List<IValidator>> validationAttribute in ValidationAttributes) {
                         string _ = this[validationAttribute.Key];
                     }
                 }
 
                 object value = GetType().GetProperty(columnName)?.GetValue(this);
-                bool isOk = ValidationAttributes.TryGetValue(columnName, out List<IValidatorAttribute> validators);
+                bool isOk = ValidationAttributes.TryGetValue(columnName, out List<IValidator> validators);
                 if (!isOk) {
                     return string.Empty;
                 }
@@ -78,10 +79,34 @@ namespace Z.MVVMHelper
             }
         }
 
+        /// <summary>
+        ///     Register a custom <see cref="IValidator" />
+        /// </summary>
+        /// <param name="validator">The validator</param>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        protected void RegisterValidator([NotNull] IValidator validator) {
+            ValueValidator.ArgumentNull(validator, nameof(validator));
+            ValidationAttributes.AddOrUpdate(
+                validator.PropertyName,
+                new List<IValidator> {validator},
+                (s, list) =>
+                {
+                    list?.Add(validator);
+                    return list;
+                });
+        }
+
         private void InitializeDataValidator() {
-            IEnumerable<IValidatorAttribute> props = GetType().GetProperties().SelectMany(p => p.GetCustomAttributes(typeof(IValidatorAttribute), true).OfType<IValidatorAttribute>());
-            foreach (IValidatorAttribute validatorAttribute in props) {
-                ValidationAttributes.GetOrAdd(validatorAttribute.PropertyName, new List<IValidatorAttribute>())?.Add(validatorAttribute);
+            IEnumerable<IValidator> props = GetType().GetProperties().SelectMany(p => p.GetCustomAttributes(typeof(IValidator), true).OfType<IValidator>());
+            foreach (IValidator validatorAttribute in props) {
+                ValidationAttributes.AddOrUpdate(
+                    validatorAttribute.PropertyName,
+                    new List<IValidator> {validatorAttribute},
+                    (s, list) =>
+                    {
+                        list?.Add(validatorAttribute);
+                        return list;
+                    });
             }
         }
     }

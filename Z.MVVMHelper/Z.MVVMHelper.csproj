@@ -66,11 +66,11 @@
     <Compile Include="Converters\InverterConverter.cs" />
     <Compile Include="Interfaces\IExceptionHandler.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
-    <Compile Include="Interfaces\IValidatorAttribute.cs" />
+    <Compile Include="Interfaces\IValidator.cs" />
     <Compile Include="Internals\ExceptionGenerator.cs" />
     <Compile Include="Internals\ValueValidator.cs" />
     <Compile Include="Validation\BaseValidationAttribute.cs" />
-    <Compile Include="Validation\CustomValidationAttribute.cs" />
+    <Compile Include="Validation\CustomValidator.cs" />
     <Compile Include="Validation\ParseableValidationAttribute.cs" />
     <Compile Include="Validation\RegexValidationAttribute.cs" />
     <Compile Include="VmBase.cs" />

@@ -14,7 +14,7 @@ namespace Z.MVVMHelper.Interfaces
     /// <summary>
     ///     Interface for validator attributes
     /// </summary>
-    public interface IValidatorAttribute
+    public interface IValidator
     {
         /// <summary>
         ///     Validator

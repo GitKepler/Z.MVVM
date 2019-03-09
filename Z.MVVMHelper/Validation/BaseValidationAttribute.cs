@@ -15,9 +15,9 @@ using Z.MVVMHelper.Internals;
 
 namespace Z.MVVMHelper.Validation
 {
-    /// <inheritdoc cref="IValidatorAttribute" />
+    /// <inheritdoc cref="IValidator" />
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public abstract class BaseValidationAttribute : Attribute, IValidatorAttribute
+    public abstract class BaseValidationAttribute : Attribute, IValidator
     {
         /// <inheritdoc />
         protected BaseValidationAttribute([NotNull] string propertyName) {
