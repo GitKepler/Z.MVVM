@@ -24,6 +24,13 @@ namespace Z.MVVMHelper
         [NotNull]
         private ConcurrentDictionary<string, string> ValidationErrors { get; } = new ConcurrentDictionary<string, string>();
 
+        /// <summary>
+        /// Validation Errors
+        /// </summary>
+        [NotNull]
+        public IReadOnlyDictionary<string, string> Errors => ValidationErrors;
+
+
         [NotNull]
         private ConcurrentDictionary<string, List<IValidator>> ValidationAttributes { get; } = new ConcurrentDictionary<string, List<IValidator>>();
 
