@@ -43,14 +43,28 @@ namespace Z.MVVMHelper.Tests
 
         [TestMethod]
         public void TestCustomValidationWithTextNotPass() {
-            vm.CheckedExpression1 = "abcdef";
-            string error = vm.Errors[nameof(vm.CheckedExpression1)];
+            vm.CheckedExpression2 = "abcdef";
+            string error = vm.Errors[nameof(vm.CheckedExpression2)];
             Assert.AreEqual("String length must be < 10", error);
         }
 
         [TestMethod]
         public void TestCustomValidationWithTextPass() {
+            vm.CheckedExpression2 = "abcdefghijklmn";
+            string error = vm.Errors[nameof(vm.CheckedExpression2)];
+            Assert.IsTrue(string.IsNullOrWhiteSpace(error));
+        }
+
+        [TestMethod]
+        public void TestCustomValidationWithoutTextNotPass() {
             vm.CheckedExpression1 = "abcdefghijklmn";
+            string error = vm.Errors[nameof(vm.CheckedExpression1)];
+            Assert.AreEqual(error, "s => s.Length > 10");
+        }
+
+        [TestMethod]
+        public void TestCustomValidationWithoutTextPass() {
+            vm.CheckedExpression1 = "abcdef";
             string error = vm.Errors[nameof(vm.CheckedExpression1)];
             Assert.IsTrue(string.IsNullOrWhiteSpace(error));
         }
