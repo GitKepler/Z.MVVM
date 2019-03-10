@@ -53,5 +53,27 @@ namespace Z.MVVMHelper
                     return list;
                 });
         }
+
+        [NotNull]
+        private IReadOnlyList<string> FetchErrors([NotNull] string property) {
+            var errors = new List<string>();
+            List<IValidator> attr = ValidationAttributes[property];
+            if (attr is null) {
+                return errors;
+            }
+
+            ValueValidator.ArgumentNull(property, nameof(property));
+            object value = GetType().GetProperty(property)?.GetValue(this);
+            foreach (IValidator validator in attr) {
+                string res = validator.ErrorGenerator(value);
+                if (string.IsNullOrWhiteSpace(res)) {
+                    continue;
+                }
+
+                errors.Add(res);
+            }
+
+            return errors;
+        }
     }
 }
