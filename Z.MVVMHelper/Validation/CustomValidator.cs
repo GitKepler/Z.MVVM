@@ -23,33 +23,27 @@ namespace Z.MVVMHelper.Validation
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public sealed class CustomValidator<T> : IValidator
     {
-        /// <summary>
-        ///     Code of the predicate
-        /// </summary>
-        [NotNull] public readonly string PredicateCode;
-
         /// <inheritdoc />
         public CustomValidator([NotNull] string propertyName, [NotNull] Expression<Predicate<T>> filter) {
             ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
             ValueValidator.ArgumentNull(filter, nameof(filter));
             PropertyName = propertyName;
-            PredicateCode = filter.ToString();
+            var predicateCode = filter.ToString();
             Predicate<T> predicate = filter.Compile();
             ErrorGenerator = o => o is T t
                 ? predicate(t)
                     ? string.Empty
-                    : $" {PredicateCode} did not pass."
+                    : $" {predicateCode} did not pass."
                 : "Invalid type.";
         }
 
         /// <inheritdoc />
-        public CustomValidator([NotNull] string propertyName, [NotNull] Expression<Predicate<T>> filter, [NotNull] Func<T, string> errorGenerator) {
+        public CustomValidator([NotNull] string propertyName, [NotNull] Predicate<T> filter, [NotNull] Func<T, string> errorGenerator) {
             ValueValidator.ArgumentNull(filter, nameof(filter));
             ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
             ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
             PropertyName = propertyName;
-            PredicateCode = filter.ToString();
-            Predicate<T> predicate = filter.Compile();
+            Predicate<T> predicate = filter;
             ErrorGenerator = o => o is T t
                 ? predicate(t)
                     ? string.Empty
