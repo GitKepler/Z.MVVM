@@ -41,10 +41,18 @@ namespace Z.MVVMHelper.Tests
             Assert.IsTrue(string.IsNullOrWhiteSpace(error));
         }
 
+        [TestMethod]
         public void TestCustomValidationWithTextNotPass() {
             vm.CheckedExpression1 = "abcdef";
             string error = vm.Errors[nameof(vm.CheckedExpression1)];
             Assert.AreEqual("String length must be < 10", error);
+        }
+
+        [TestMethod]
+        public void TestCustomValidationWithTextPass() {
+            vm.CheckedExpression1 = "abcdefghijklmn";
+            string error = vm.Errors[nameof(vm.CheckedExpression1)];
+            Assert.IsTrue(string.IsNullOrWhiteSpace(error));
         }
     }
 }
