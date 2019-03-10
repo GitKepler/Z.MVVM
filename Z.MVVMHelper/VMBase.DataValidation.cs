@@ -18,72 +18,22 @@ using Z.MVVMHelper.Internals;
 
 namespace Z.MVVMHelper
 {
-    public abstract partial class VmBase : IDataErrorInfo
+    public abstract partial class VmBase
     {
-        [CanBeNull] private string _error;
-
-        [NotNull]
-        private ConcurrentDictionary<string, string> ValidationErrors { get; } = new ConcurrentDictionary<string, string>();
-
-        /// <summary>
-        ///     Validation Errors
-        /// </summary>
-        [NotNull]
-        public IReadOnlyDictionary<string, string> Errors => ValidationErrors;
-
-
         [NotNull]
         private ConcurrentDictionary<string, List<IValidator>> ValidationAttributes { get; } = new ConcurrentDictionary<string, List<IValidator>>();
 
-        /// <summary>
-        ///     If the VM is valid
-        /// </summary>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-        public bool IsValid => string.IsNullOrWhiteSpace(Error);
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     Validation errors
-        /// </summary>
-        [CanBeNull]
-        public string Error {
-            get => _error;
-            private set {
-                EditProperty(ref _error, value);
-                DelegatePropertyChanged(nameof(IsValid));
-            }
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     Validation errors by members
-        /// </summary>
-        /// <param name="columnName">Name of the member</param>
-        /// <returns></returns>
-        [NotNull]
-        public string this[[CanBeNull] string columnName] {
-            get {
-                if (columnName is null) {
-                    foreach (KeyValuePair<string, List<IValidator>> validationAttribute in ValidationAttributes) {
-                        string _ = this[validationAttribute.Key];
-                    }
-                }
-
-                object value = GetType().GetProperty(columnName)?.GetValue(this);
-                bool isOk = ValidationAttributes.TryGetValue(columnName, out List<IValidator> validators);
-                if (!isOk) {
-                    return string.Empty;
-                }
-
-                string errors = validators
-                    .Select(a => a?.ErrorGenerator)
-                    .Where(g => !(g is null))
-                    .Aggregate(new StringBuilder(), (builder, generator) => builder.AppendLine(generator(value)))
-                    .ToString()
-                    .Trim();
-                ValidationErrors.AddOrUpdate(columnName, errors, (s, s1) => errors);
-                Error = string.Join(Environment.NewLine, ValidationErrors.ToArray().Where(kvp => !string.IsNullOrWhiteSpace(kvp.Value)).Select(kvp => $"[{kvp.Key}]{Environment.NewLine}{kvp.Value}"));
-                return errors;
+        private void InitializeDataValidator() {
+            IEnumerable<IValidator> props = GetType().GetProperties().SelectMany(p => p.GetCustomAttributes(typeof(IValidator), true).OfType<IValidator>());
+            foreach (IValidator validatorAttribute in props) {
+                ValidationAttributes.AddOrUpdate(
+                    validatorAttribute.PropertyName,
+                    new List<IValidator> {validatorAttribute},
+                    (s, list) =>
+                    {
+                        list?.Add(validatorAttribute);
+                        return list;
+                    });
             }
         }
 
@@ -102,20 +52,6 @@ namespace Z.MVVMHelper
                     list?.Add(validator);
                     return list;
                 });
-        }
-
-        private void InitializeDataValidator() {
-            IEnumerable<IValidator> props = GetType().GetProperties().SelectMany(p => p.GetCustomAttributes(typeof(IValidator), true).OfType<IValidator>());
-            foreach (IValidator validatorAttribute in props) {
-                ValidationAttributes.AddOrUpdate(
-                    validatorAttribute.PropertyName,
-                    new List<IValidator> {validatorAttribute},
-                    (s, list) =>
-                    {
-                        list?.Add(validatorAttribute);
-                        return list;
-                    });
-            }
         }
     }
 }

@@ -75,7 +75,13 @@
     <Compile Include="Validation\RegexValidationAttribute.cs" />
     <Compile Include="VmBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VmBase.DataError.cs">
+      <DependentUpon>VmBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="VmBase.DataValidation.cs">
+      <DependentUpon>VmBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VmBase.NotifyDataError.cs">
       <DependentUpon>VmBase.cs</DependentUpon>
     </Compile>
     <Compile Include="VmBase.PropertyChanged.cs.cs">
