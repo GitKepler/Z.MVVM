@@ -215,7 +215,7 @@ namespace ProjectNamespace
     
         public AsyncCommand Command { get; }
         
-        // This field must contain a double value greater than 10 and 5 at least 5 chars
+        // This field must contain a double value greater than 10 and at least 5 chars
         public string TextField { get => _textField; set => EditProperty(ref _textField, value); } 
         private string _textField;
         
