@@ -228,6 +228,22 @@ namespace ProjectNamespace
 
 *\* The Expression is still used in the latest release*
 
+### XAML:
+
+#### Command usage: 
+
+```xaml
+<Button Content="ButtonText" Command="{Binding WhateverCommand}" />
+```
+
+#### Field usage example:
+
+```xaml
+<TextBox Text="{Binding WhateverField, ValidatesOnDataErrors=True}" /> <!-- * -->
+```
+
+*\* `ValidatesOnDataErrors` might change into `ValidatesOnNotifyDataErrors` in the near future*
+
 ## Build instructions:
 
 * Check that you have the requirements to run a .NET Framework 4.7.2 application
