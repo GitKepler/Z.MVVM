@@ -176,6 +176,7 @@ namespace ProjectNamespace
         
         [RegexValidation(nameof(TextField), @"^[^-]", AllowNull = true)]
         // It is possible to chain them (currently only boolean AND is applied)
+        // Using a CustomValidator might be more effective, but a regex works too
         [ParseableValidation(nameof(TextContentValid), ParseableValidationAttribute.ParserTarget.Float)]
         public string TextField { get => _textField; set => EditProperty(ref _textField, value); } // This field must contain a positive float value
         private string _textField;
