@@ -1,5 +1,5 @@
 # Z.MVVM
-Simple MVVM base library without boilerplate code
+Simple MVVM base library with almost 0 boilerplate code
 
 ![](https://img.shields.io/badge/.NET-Framework%204.7.2-blue.svg)
 
