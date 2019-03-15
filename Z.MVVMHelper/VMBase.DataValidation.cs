@@ -23,6 +23,16 @@ namespace Z.MVVMHelper
         [NotNull]
         private ConcurrentDictionary<string, List<IValidator>> ValidationAttributes { get; } = new ConcurrentDictionary<string, List<IValidator>>();
 
+        [NotNull]
+        private ConcurrentDictionary<string, IReadOnlyList<string>> ValidationErrors { get; } = new ConcurrentDictionary<string, IReadOnlyList<string>>();
+
+        /// <summary>
+        ///     Validation Errors
+        /// </summary>
+        [NotNull]
+        public IReadOnlyDictionary<string, IReadOnlyList<string>> Errors => ValidationErrors;
+
+
         private void InitializeDataValidator() {
             IEnumerable<IValidator> props = GetType().GetProperties().SelectMany(p => p.GetCustomAttributes(typeof(IValidator), true).OfType<IValidator>());
             foreach (IValidator validatorAttribute in props) {
@@ -55,7 +65,7 @@ namespace Z.MVVMHelper
         }
 
         [NotNull]
-        private IReadOnlyList<string> FetchErrors([NotNull] string property) {
+        internal IReadOnlyList<string> FetchErrors([NotNull] string property) {
             var errors = new List<string>();
             List<IValidator> attr = ValidationAttributes[property];
             if (attr is null) {

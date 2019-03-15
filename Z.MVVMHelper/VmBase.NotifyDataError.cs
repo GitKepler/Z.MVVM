@@ -19,73 +19,40 @@ namespace Z.MVVMHelper
 {
     public abstract partial class VmBase : INotifyDataErrorInfo
     {
-        [NotNull]
-        private ConcurrentDictionary<string, List<string>> NotifyDataErrorInfoErrors { get; } = new ConcurrentDictionary<string, List<string>>();
+        private bool _hasErrors;
 
         /// <inheritdoc />
-        public bool HasErrors => NotifyDataErrorInfoErrors.Any(k => k.Value?.Any() ?? false);
+        public bool HasErrors { get => _hasErrors; set => EditProperty(ref _hasErrors, value); }
 
         /// <inheritdoc />
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         /// <inheritdoc />
-        [CanBeNull]
+        [NotNull]
         public IEnumerable GetErrors([NotNull] string propertyName) {
-            return NotifyDataErrorInfoErrors[propertyName].AsEnumerable();
+            return FetchErrors(propertyName);
         }
 
-        /// <summary>
-        /// </summary>
-        protected void InitializeDataErrorInfo() {
-            PropertyChanged += NotifyDataErrorInfo_PropertyChanged;
-        }
-
-        private void NotifyDataErrorInfo_PropertyChanged([CanBeNull] object sender, [NotNull] PropertyChangedEventArgs e) {
-            if (e.PropertyName is null) {
-                return;
-            }
-
-            if (!ValidationAttributes.ContainsKey(e.PropertyName)) {
-                return;
-            }
-
-            IReadOnlyList<string> errors = FetchErrors(e.PropertyName);
-
-
-            List<string> bag = NotifyDataErrorInfoErrors[e.PropertyName];
-            bool isError = errors.Any();
-            switch (bag) {
-                case null when isError:
-                    bag = new List<string>();
-                    NotifyDataErrorInfoErrors[e.PropertyName] = bag;
-                    break;
-                case null:
+        private void InitializeINotifyDataError() {
+            PropertyChanged += (sender, args) =>
+            {
+                if (args?.PropertyName is null || !ValidationAttributes.ContainsKey(args.PropertyName)) {
                     return;
-            }
+                }
 
-            bool containedError = bag.Any();
+                IReadOnlyList<string> errors = FetchErrors(args.PropertyName);
+                ValidationErrors.AddOrUpdate(args.PropertyName, errors, (a, b) => errors);
+                if (errors.Count <= 0) {
+                    if (ValidationErrors.Values.All(v => !v?.Any() ?? true)) {
+                        HasErrors = false;
+                    }
 
-            bool sameExc = IsSame(bag.ToArray(), errors.ToArray());
-            if (sameExc) {
-                return;
-            }
+                    return;
+                }
 
-            bag.Clear();
-            bag.AddRange(errors);
-
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(e.PropertyName));
-        }
-
-        private bool IsSame([NotNull] string[] a, [NotNull] string[] b) {
-            ValueValidator.ArgumentNull(a, nameof(a));
-            ValueValidator.ArgumentNull(b, nameof(b));
-            if (a.Length != b.Length) {
-                return false;
-            }
-
-            IGrouping<string, string>[] groupedA = a.GroupBy(v => v).ToArray();
-            IGrouping<string, string>[] groupedB = b.GroupBy(v => v).ToArray();
-            return groupedA.Length == groupedB.Length && groupedA.All(grouping => groupedB.Any(g => g.Key == grouping.Key));
+                HasErrors = true;
+                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(args.PropertyName));
+            };
         }
     }
 }

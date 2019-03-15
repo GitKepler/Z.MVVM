@@ -110,7 +110,7 @@ namespace Z.MVVMHelper.Commands
         }
 
         private void PropertyBindingValueModified([NotNull] object sender, [NotNull] PropertyChangedEventArgs e) {
-            if (e.PropertyName == nameof(Error)) {
+            if (e.PropertyName == nameof(HasErrors)) {
                 Refresh();
             }
         }
@@ -191,14 +191,16 @@ namespace Z.MVVMHelper.Commands
 
         /// <inheritdoc />
         public bool CanExecute([CanBeNull] object parameter) {
-            var normal = _canExecute(parameter) && (!IsRunning || AllowMultipleExecutions);
+            bool normal = _canExecute(parameter) && (!IsRunning || AllowMultipleExecutions);
             foreach (KeyValuePair<VmBase, List<string>> propertiesBinding in _propertiesBindings) {
                 if (propertiesBinding.Value is null) {
                     continue;
                 }
 
                 foreach (string s in propertiesBinding.Value) {
-                    normal &= string.IsNullOrWhiteSpace(propertiesBinding.Key?.Errors[s]);
+                    //IReadOnlyList<string> list = new List<string>();
+                    //var iserror = propertiesBinding.Key?.Errors.TryGetValue(s, out list) ?? false;
+                    normal &= !propertiesBinding.Key?.FetchErrors(s).Any() ?? false; //!(iserror && (list?.Any() ?? false));
                     if (!normal) {
                         break;
                     }

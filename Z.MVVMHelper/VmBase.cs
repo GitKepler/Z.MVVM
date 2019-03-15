@@ -35,7 +35,9 @@ namespace Z.MVVMHelper
         /// <summary>
         ///     Constructor for <see cref="VmBase" />
         /// </summary>
-        protected VmBase() : this(true) { }
+        protected VmBase() : this(true) {
+            InitializeINotifyDataError();
+        }
         
         /// <summary>
         ///     Automate calls to <see cref="OnPropertyChanging" /> and <see cref="OnPropertyChanged" />
