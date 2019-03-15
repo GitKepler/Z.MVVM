@@ -55,7 +55,7 @@ namespace Z.MVVMHelper.Tests
         [TestMethod]
         public void TestCustomValidationWithTextNotPass() {
             vm = new FakeVM {
-                CheckedExpression2 = "abcdef"
+                CheckedExpression2 = "abcdefghijklmn"
             };
             Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedExpression2)));
             string error = vm.Errors[nameof(vm.CheckedExpression2)]?.FirstOrDefault();
@@ -67,7 +67,7 @@ namespace Z.MVVMHelper.Tests
         [TestMethod]
         public void TestCustomValidationWithTextPass() {
             vm = new FakeVM {
-                CheckedExpression2 = "abcdefghijklmn"
+                CheckedExpression2 = "abcdef"
             };
             if (vm.Errors.ContainsKey(nameof(vm.CheckedExpression2))) {
                 IReadOnlyList<string> value = vm.Errors[nameof(vm.CheckedExpression2)];
