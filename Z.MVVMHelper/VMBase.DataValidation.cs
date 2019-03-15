@@ -67,8 +67,8 @@ namespace Z.MVVMHelper
         [NotNull]
         internal IReadOnlyList<string> FetchErrors([NotNull] string property) {
             var errors = new List<string>();
-            List<IValidator> attr = ValidationAttributes[property];
-            if (attr is null) {
+            bool exist = ValidationAttributes.TryGetValue(property, out List<IValidator> attr);
+            if (!exist || attr is null) {
                 return errors;
             }
 
