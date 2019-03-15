@@ -78,6 +78,9 @@
     <Compile Include="VmBase.DataValidation.cs">
       <DependentUpon>VmBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="VmBase.NotifyDataError.cs">
+      <DependentUpon>VmBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="VmBase.PropertyChanged.cs.cs">
       <DependentUpon>VmBase.cs</DependentUpon>
     </Compile>
