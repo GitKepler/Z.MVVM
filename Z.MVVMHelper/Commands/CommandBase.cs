@@ -198,9 +198,7 @@ namespace Z.MVVMHelper.Commands
                 }
 
                 foreach (string s in propertiesBinding.Value) {
-                    //IReadOnlyList<string> list = new List<string>();
-                    //var iserror = propertiesBinding.Key?.Errors.TryGetValue(s, out list) ?? false;
-                    normal &= !propertiesBinding.Key?.FetchErrors(s).Any() ?? false; //!(iserror && (list?.Any() ?? false));
+                    normal &= !propertiesBinding.Key?.FetchErrors(s).Any() ?? false;
                     if (!normal) {
                         break;
                     }
