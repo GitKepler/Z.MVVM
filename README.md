@@ -240,10 +240,8 @@ namespace ProjectNamespace
 #### Field usage example:
 
 ```xaml
-<TextBox Text="{Binding WhateverField, ValidatesOnDataErrors=True}" /> <!-- * -->
+<TextBox Text="{Binding WhateverField, ValidatesOnNotifyDataErrors=True}" />
 ```
-
-*\* `ValidatesOnDataErrors` might change into `ValidatesOnNotifyDataErrors` in the near future*
 
 ## Build instructions:
 
