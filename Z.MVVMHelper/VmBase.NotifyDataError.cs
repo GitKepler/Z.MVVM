@@ -17,7 +17,7 @@ using Z.MVVMHelper.Internals;
 
 namespace Z.MVVMHelper
 {
-    public abstract partial class VmBase : INotifyDataErrorInfo
+    public abstract partial class VmBase
     {
         private bool _hasErrors;
 

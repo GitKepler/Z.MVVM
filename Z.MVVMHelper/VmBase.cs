@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Z.MVVMHelper.Interfaces;
 using Z.MVVMHelper.Internals;
 
 #endregion
@@ -20,8 +21,13 @@ namespace Z.MVVMHelper
     /// </summary>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public abstract partial class VmBase
+    public abstract partial class VmBase : IVmBase
     {
+        /// <summary>
+        /// The VM-wide command repository
+        /// </summary>
+        public ICommandRepository GlobalRepository { get; }
+
         /// <summary>
         ///     Constructor for <see cref="VmBase" />
         /// </summary>
@@ -37,6 +43,7 @@ namespace Z.MVVMHelper
         /// </summary>
         protected VmBase() : this(true) {
             InitializeINotifyDataError();
+            GlobalRepository = new CommandRepository();
         }
         
         /// <summary>

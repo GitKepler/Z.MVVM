@@ -14,7 +14,7 @@ using Z.MVVMHelper.Internals;
 
 namespace Z.MVVMHelper
 {
-    public abstract partial class VmBase : INotifyPropertyChanging
+    public abstract partial class VmBase
     {
         /// <inheritdoc />
         /// <summary>

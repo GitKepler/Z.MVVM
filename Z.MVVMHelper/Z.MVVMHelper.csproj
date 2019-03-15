@@ -64,9 +64,11 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ChainedConverter.cs" />
     <Compile Include="Converters\InverterConverter.cs" />
+    <Compile Include="Interfaces\ICommandRepository.cs" />
     <Compile Include="Interfaces\IExceptionHandler.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IValidator.cs" />
+    <Compile Include="Interfaces\IVmBase.cs" />
     <Compile Include="Internals\ExceptionGenerator.cs" />
     <Compile Include="Internals\ValueValidator.cs" />
     <Compile Include="Validation\BaseValidationAttribute.cs" />
