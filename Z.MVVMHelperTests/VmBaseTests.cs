@@ -86,7 +86,7 @@ namespace Z.MVVMHelper.Tests
             Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedExpression1)));
             string error = vm.Errors[nameof(vm.CheckedExpression1)]?.FirstOrDefault();
             Assert.IsNotNull(error);
-            Assert.AreEqual("s => s.Length > 10 did not pass.", error);
+            Assert.AreEqual("s => (s.Length > 10) did not pass.", error);
             Assert.IsTrue(vm.HasErrors);
         }
 
