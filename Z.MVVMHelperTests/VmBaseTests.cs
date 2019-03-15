@@ -183,8 +183,6 @@ namespace Z.MVVMHelper.Tests
             public string CheckedExpression1 { get => _checkedExpression1; set => EditProperty(ref _checkedExpression1, value); }
 
             public string CheckedExpression2 { get => _checkedExpression2; set => EditProperty(ref _checkedExpression2, value); }
-
-            public Command Command { get; }
         }
     }
 }
