@@ -23,6 +23,7 @@ namespace Z.MVVMHelper.Validation
         [Flags]
         public enum ParserTarget
         {
+#pragma warning disable 1591 // No comment needed
             Int8 = SByte,
             UInt8 = Byte,
             Int16 = (1 << 8) + 16,
@@ -43,6 +44,7 @@ namespace Z.MVVMHelper.Validation
             UInt = UInt32,
             ULong = UInt64,
             Float = Single
+#pragma warning restore 1591
         }
 
         /// <inheritdoc />
