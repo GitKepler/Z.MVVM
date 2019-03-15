@@ -83,7 +83,7 @@
     <Compile Include="VmBase.NotifyDataError.cs">
       <DependentUpon>VmBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="VmBase.PropertyChanged.cs.cs">
+    <Compile Include="VmBase.PropertyChanged.cs">
       <DependentUpon>VmBase.cs</DependentUpon>
     </Compile>
     <Compile Include="VmBase.PropertyChanging.cs">
