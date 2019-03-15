@@ -1,5 +1,5 @@
 # Z.MVVM
-Simple MVVM base library without boilerplate code
+Simple MVVM base library with almost 0 boilerplate code
 
 ![](https://img.shields.io/badge/.NET-Framework%204.7.2-blue.svg)
 
@@ -176,6 +176,7 @@ namespace ProjectNamespace
         
         [RegexValidation(nameof(TextField), @"^[^-]", AllowNull = true)]
         // It is possible to chain them (currently only boolean AND is applied)
+        // Using a CustomValidator might be more effective, but a regex works too
         [ParseableValidation(nameof(TextContentValid), ParseableValidationAttribute.ParserTarget.Float)]
         public string TextField { get => _textField; set => EditProperty(ref _textField, value); } // This field must contain a positive float value
         private string _textField;
@@ -215,7 +216,7 @@ namespace ProjectNamespace
     
         public AsyncCommand Command { get; }
         
-        // This field must contain a double value greater than 10 and 5 at least 5 chars
+        // This field must contain a double value greater than 10 and at least 5 chars
         public string TextField { get => _textField; set => EditProperty(ref _textField, value); } 
         private string _textField;
         
@@ -227,6 +228,22 @@ namespace ProjectNamespace
 ```
 
 *\* The Expression is still used in the latest release*
+
+### XAML:
+
+#### Command usage: 
+
+```xaml
+<Button Content="ButtonText" Command="{Binding WhateverCommand}" />
+```
+
+#### Field usage example:
+
+```xaml
+<TextBox Text="{Binding WhateverField, ValidatesOnDataErrors=True}" /> <!-- * -->
+```
+
+*\* `ValidatesOnDataErrors` might change into `ValidatesOnNotifyDataErrors` in the near future*
 
 ## Build instructions:
 
