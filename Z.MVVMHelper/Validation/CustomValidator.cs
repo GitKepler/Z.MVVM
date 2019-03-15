@@ -33,7 +33,7 @@ namespace Z.MVVMHelper.Validation
             ErrorGenerator = o => o is T t
                 ? predicate(t)
                     ? string.Empty
-                    : $" {predicateCode} did not pass."
+                    : $"{predicateCode} did not pass."
                 : "Invalid type.";
         }
 

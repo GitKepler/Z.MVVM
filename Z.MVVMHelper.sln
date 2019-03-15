@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z.MVVMHelper", "Z.MVVMHelper\Z.MVVMHelper.csproj", "{2CE34DA1-46B1-4DEC-814E-0168F3E56F41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z.MVVMHelperTests", "Z.MVVMHelperTests\Z.MVVMHelperTests.csproj", "{7329F7A3-4D96-43F1-B1BB-34B08D8E8A0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2CE34DA1-46B1-4DEC-814E-0168F3E56F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CE34DA1-46B1-4DEC-814E-0168F3E56F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CE34DA1-46B1-4DEC-814E-0168F3E56F41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7329F7A3-4D96-43F1-B1BB-34B08D8E8A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7329F7A3-4D96-43F1-B1BB-34B08D8E8A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7329F7A3-4D96-43F1-B1BB-34B08D8E8A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7329F7A3-4D96-43F1-B1BB-34B08D8E8A0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
