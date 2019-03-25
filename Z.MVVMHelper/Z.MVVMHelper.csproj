@@ -73,6 +73,7 @@
     <Compile Include="Internals\ValueValidator.cs" />
     <Compile Include="Validation\BaseValidationAttribute.cs" />
     <Compile Include="Validation\CustomValidator.cs" />
+    <Compile Include="Validation\DateBetweenValidationAttribute.cs" />
     <Compile Include="Validation\NotNullValidationAttribute.cs" />
     <Compile Include="Validation\ParseableValidationAttribute.cs" />
     <Compile Include="Validation\RegexValidationAttribute.cs" />
