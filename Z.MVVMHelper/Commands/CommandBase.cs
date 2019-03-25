@@ -93,7 +93,7 @@ namespace Z.MVVMHelper.Commands
             ValueValidator.ArgumentNull(viewmodel, nameof(viewmodel));
             ValueValidator.ArgumentNull(propertyPath, nameof(propertyPath));
             if (!_propertiesBindings.ContainsKey(viewmodel)) {
-                viewmodel.PropertyChanged += PropertyBindingValueModified;
+                viewmodel.ErrorsChanged += Viewmodel_ErrorsChanged;
             }
 
             _propertiesBindings.AddOrUpdate(
@@ -109,8 +109,15 @@ namespace Z.MVVMHelper.Commands
                 });
         }
 
-        private void PropertyBindingValueModified([NotNull] object sender, [NotNull] PropertyChangedEventArgs e) {
-            if (e.PropertyName == nameof(HasErrors)) {
+        private void Viewmodel_ErrorsChanged([NotNull] object sender, [NotNull] DataErrorsChangedEventArgs e) {
+            ValueValidator.ArgumentNull(sender, nameof(sender));
+            ValueValidator.ArgumentNull(e, nameof(e));
+            if (!(sender is VmBase vm)) {
+                return;
+            }
+
+            List<string> values = _propertiesBindings[vm];
+            if (values?.Contains(e.PropertyName) ?? false) {
                 Refresh();
             }
         }
@@ -124,6 +131,7 @@ namespace Z.MVVMHelper.Commands
         public void RemoveBindingToProperty<TVm>([NotNull] TVm viewmodel, [NotNull] string propertyPath) where TVm : VmBase {
             ValueValidator.ArgumentNull(viewmodel, nameof(viewmodel));
             ValueValidator.ArgumentNull(propertyPath, nameof(propertyPath));
+            viewmodel.ErrorsChanged -= Viewmodel_ErrorsChanged;
             _propertiesBindings.AddOrUpdate(
                 viewmodel,
                 new List<string>(),

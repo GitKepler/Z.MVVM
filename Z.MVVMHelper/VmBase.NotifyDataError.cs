@@ -41,16 +41,16 @@ namespace Z.MVVMHelper
                 }
 
                 IReadOnlyList<string> errors = FetchErrors(args.PropertyName);
-                ValidationErrors.AddOrUpdate(args.PropertyName, errors, (a, b) => errors);
-                if (errors.Count <= 0) {
-                    if (ValidationErrors.Values.All(v => !v?.Any() ?? true)) {
-                        HasErrors = false;
+                lock (ValidationErrors) {
+                    ValidationErrors.AddOrUpdate(args.PropertyName, errors, (a, b) => errors);
+                    if ((errors?.Count ?? 0) == 0) {
+                        ValidationErrors.TryRemove(args.PropertyName, out _);
                     }
 
-                    return;
+                    IReadOnlyList<string>[] err = Errors.Values.Where(k => !(k is null)).ToArray();
+                    HasErrors = err.Length > 0 && err.Any(e => (e?.Count ?? 0) > 0);
                 }
 
-                HasErrors = true;
                 ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(args.PropertyName));
             };
         }
