@@ -26,6 +26,7 @@ namespace Z.MVVMHelper
         /// <summary>
         /// The VM-wide command repository
         /// </summary>
+        [NotNull]
         public ICommandRepository GlobalRepository { get; }
 
         /// <summary>
