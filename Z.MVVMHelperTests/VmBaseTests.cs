@@ -104,6 +104,32 @@ namespace Z.MVVMHelper.Tests
         }
 
         [TestMethod]
+        public void TestNullCheckNotPass() {
+            var vm = new FakeVM {
+                CheckedNull = null
+            };
+            Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedNull)));
+            string error = vm.Errors[nameof(vm.CheckedNull)]?.FirstOrDefault();
+            Assert.IsNotNull(error);
+            Assert.AreEqual($"The value of {nameof(vm.CheckedNull)} is null.", error);
+            Assert.IsTrue(vm.HasErrors);
+        }
+
+        [TestMethod]
+        public void TestNullCheckPass() {
+            var vm = new FakeVM {
+                CheckedNull = "test"
+            };
+            if (vm.Errors.ContainsKey(nameof(vm.CheckedNull))) {
+                IReadOnlyList<string> value = vm.Errors[nameof(vm.CheckedNull)];
+                Assert.IsNotNull(value);
+                Assert.AreEqual(0, value.Count);
+            }
+
+            Assert.IsFalse(vm.HasErrors);
+        }
+
+        [TestMethod]
         public void ModifyPropertyTest() {
             var vm = new FakeVM();
             var pre = "";
@@ -167,6 +193,7 @@ namespace Z.MVVMHelper.Tests
         {
             private string _checkedExpression1;
             private string _checkedExpression2;
+            private object _checkedNull;
             private string _checkedRegex;
             private string _notChecked;
 
@@ -183,6 +210,9 @@ namespace Z.MVVMHelper.Tests
             public string CheckedExpression1 { get => _checkedExpression1; set => EditProperty(ref _checkedExpression1, value); }
 
             public string CheckedExpression2 { get => _checkedExpression2; set => EditProperty(ref _checkedExpression2, value); }
+
+            [NotNullValidation(nameof(CheckedNull))]
+            public object CheckedNull { get => _checkedNull; set => EditProperty(ref _checkedNull, value); }
         }
     }
 }

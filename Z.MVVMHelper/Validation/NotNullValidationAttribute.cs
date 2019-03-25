@@ -23,7 +23,7 @@ namespace Z.MVVMHelper.Validation
         /// <inheritdoc />
         public NotNullValidationAttribute([NotNull] string propertyName) : base(propertyName) {
             ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
-            ErrorGenerator = o => o is null ? $"The value of {propertyName} is null" : string.Empty;
+            ErrorGenerator = o => o is null ? $"The value of {propertyName} is null." : string.Empty;
         }
 
         #region Overrides of BaseValidationAttribute
