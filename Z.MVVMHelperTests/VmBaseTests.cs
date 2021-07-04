@@ -1,6 +1,5 @@
-﻿#region USINGS
+#region USINGS
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Z.MVVMHelper;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
+
+using Xunit;
+
 using Z.MVVMHelper.Commands;
 using Z.MVVMHelper.Validation;
 
@@ -16,121 +17,135 @@ using Z.MVVMHelper.Validation;
 
 namespace Z.MVVMHelper.Tests
 {
-    [TestClass]
     public class VmBaseTests
     {
-        [TestInitialize]
-        public void Init() { }
-
-        [TestCleanup]
-        public void Cleanup() { }
-
-        [TestMethod]
-        public void TestRegexValidationNotPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestRegexValidationNotPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedRegex = "123456"
             };
-            Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedRegex)));
+            Assert.True(vm.Errors.ContainsKey(nameof(vm.CheckedRegex)));
             string error = vm.Errors[nameof(vm.CheckedRegex)]?.FirstOrDefault();
-            Assert.IsNotNull(error);
-            Assert.AreEqual($"\"{vm.CheckedRegex}\" is not a valid value for {nameof(vm.CheckedRegex)}", error);
-            Assert.IsTrue(vm.HasErrors);
+            Assert.NotNull(error);
+            Assert.Equal($"\"{vm.CheckedRegex}\" is not a valid value for {nameof(vm.CheckedRegex)}", error);
+            Assert.True(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestRegexValidationPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestRegexValidationPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedRegex = "ABC123"
             };
-            if (vm.Errors.ContainsKey(nameof(vm.CheckedRegex))) {
+            if (vm.Errors.ContainsKey(nameof(vm.CheckedRegex)))
+            {
                 IReadOnlyList<string> value = vm.Errors[nameof(vm.CheckedRegex)];
-                Assert.IsNotNull(value);
-                Assert.AreEqual(0, value.Count);
+                Assert.NotNull(value);
+                Assert.Equal(0, value.Count);
             }
 
-            Assert.IsFalse(vm.HasErrors);
+            Assert.False(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestCustomValidationWithTextNotPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestCustomValidationWithTextNotPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedExpression2 = "abcdefghijklmn"
             };
-            Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedExpression2)));
+            Assert.True(vm.Errors.ContainsKey(nameof(vm.CheckedExpression2)));
             string error = vm.Errors[nameof(vm.CheckedExpression2)]?.FirstOrDefault();
-            Assert.IsNotNull(error);
-            Assert.AreEqual("String length must be < 10", error);
-            Assert.IsTrue(vm.HasErrors);
+            Assert.NotNull(error);
+            Assert.Equal("String length must be < 10", error);
+            Assert.True(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestCustomValidationWithTextPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestCustomValidationWithTextPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedExpression2 = "abcdef"
             };
-            if (vm.Errors.ContainsKey(nameof(vm.CheckedExpression2))) {
+            if (vm.Errors.ContainsKey(nameof(vm.CheckedExpression2)))
+            {
                 IReadOnlyList<string> value = vm.Errors[nameof(vm.CheckedExpression2)];
-                Assert.IsNotNull(value);
-                Assert.AreEqual(0, value.Count);
+                Assert.NotNull(value);
+                Assert.Equal(0, value.Count);
             }
 
-            Assert.IsFalse(vm.HasErrors);
+            Assert.False(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestCustomValidationWithoutTextNotPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestCustomValidationWithoutTextNotPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedExpression1 = "abcdef"
             };
-            Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedExpression1)));
+            Assert.True(vm.Errors.ContainsKey(nameof(vm.CheckedExpression1)));
             string error = vm.Errors[nameof(vm.CheckedExpression1)]?.FirstOrDefault();
-            Assert.IsNotNull(error);
-            Assert.AreEqual("s => (s.Length > 10) did not pass.", error);
-            Assert.IsTrue(vm.HasErrors);
+            Assert.NotNull(error);
+            Assert.Equal("s => (s.Length > 10) did not pass.", error);
+            Assert.True(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestCustomValidationWithoutTextPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestCustomValidationWithoutTextPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedExpression1 = "abcdefghijklmnop"
             };
-            if (vm.Errors.ContainsKey(nameof(vm.CheckedExpression1))) {
+            if (vm.Errors.ContainsKey(nameof(vm.CheckedExpression1)))
+            {
                 IReadOnlyList<string> value = vm.Errors[nameof(vm.CheckedExpression1)];
-                Assert.IsNotNull(value);
-                Assert.AreEqual(0, value.Count);
+                Assert.NotNull(value);
+                Assert.Equal(0, value.Count);
             }
 
-            Assert.IsFalse(vm.HasErrors);
+            Assert.False(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestNullCheckNotPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestNullCheckNotPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedNull = null
             };
-            Assert.IsTrue(vm.Errors.ContainsKey(nameof(vm.CheckedNull)));
+            Assert.True(vm.Errors.ContainsKey(nameof(vm.CheckedNull)));
             string error = vm.Errors[nameof(vm.CheckedNull)]?.FirstOrDefault();
-            Assert.IsNotNull(error);
-            Assert.AreEqual($"The value of {nameof(vm.CheckedNull)} is null.", error);
-            Assert.IsTrue(vm.HasErrors);
+            Assert.NotNull(error);
+            Assert.Equal($"The value of {nameof(vm.CheckedNull)} is null.", error);
+            Assert.True(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void TestNullCheckPass() {
-            var vm = new FakeVM {
+        [Fact]
+        public void TestNullCheckPass()
+        {
+            var vm = new FakeVM
+            {
                 CheckedNull = "test"
             };
-            if (vm.Errors.ContainsKey(nameof(vm.CheckedNull))) {
+            if (vm.Errors.ContainsKey(nameof(vm.CheckedNull)))
+            {
                 IReadOnlyList<string> value = vm.Errors[nameof(vm.CheckedNull)];
-                Assert.IsNotNull(value);
-                Assert.AreEqual(0, value.Count);
+                Assert.NotNull(value);
+                Assert.Equal(0, value.Count);
             }
 
-            Assert.IsFalse(vm.HasErrors);
+            Assert.False(vm.HasErrors);
         }
 
-        [TestMethod]
-        public void ModifyPropertyTest() {
+        [Fact]
+        public void ModifyPropertyTest()
+        {
             var vm = new FakeVM();
             var pre = "";
             var post = "";
@@ -138,26 +153,27 @@ namespace Z.MVVMHelper.Tests
             var postI = 0;
             vm.PropertyChanging += (sender, args) =>
             {
-                Assert.AreEqual(nameof(vm.NotChecked), args.PropertyName);
+                Assert.Equal(nameof(vm.NotChecked), args.PropertyName);
                 Interlocked.Increment(ref preI);
                 pre = vm.NotChecked;
             };
             vm.PropertyChanged += (sender, args) =>
             {
-                Assert.AreEqual(nameof(vm.NotChecked), args.PropertyName);
+                Assert.Equal(nameof(vm.NotChecked), args.PropertyName);
                 Interlocked.Increment(ref postI);
                 post = vm.NotChecked;
             };
             vm.NotChecked = "test";
-            Assert.IsTrue(string.IsNullOrEmpty(pre));
-            Assert.AreEqual("test", post);
-            Assert.AreEqual("test", vm.NotChecked);
-            Assert.AreEqual(1, preI);
-            Assert.AreEqual(1, postI);
+            Assert.True(string.IsNullOrEmpty(pre));
+            Assert.Equal("test", post);
+            Assert.Equal("test", vm.NotChecked);
+            Assert.Equal(1, preI);
+            Assert.Equal(1, postI);
         }
 
-        [TestMethod]
-        public void ModifyPropertyNonRepetTest() {
+        [Fact]
+        public void ModifyPropertyNonRepetTest()
+        {
             var vm = new FakeVM();
             var pre = "";
             var post = "";
@@ -165,28 +181,28 @@ namespace Z.MVVMHelper.Tests
             var postI = 0;
             vm.PropertyChanging += (sender, args) =>
             {
-                Assert.AreEqual(nameof(vm.NotChecked), args.PropertyName);
+                Assert.Equal(nameof(vm.NotChecked), args.PropertyName);
                 Interlocked.Increment(ref preI);
                 pre = vm.NotChecked;
             };
             vm.PropertyChanged += (sender, args) =>
             {
-                Assert.AreEqual(nameof(vm.NotChecked), args.PropertyName);
+                Assert.Equal(nameof(vm.NotChecked), args.PropertyName);
                 Interlocked.Increment(ref postI);
                 post = vm.NotChecked;
             };
             vm.NotChecked = "test";
-            Assert.IsTrue(string.IsNullOrEmpty(pre));
-            Assert.AreEqual("test", post);
-            Assert.AreEqual("test", vm.NotChecked);
-            Assert.AreEqual(1, preI);
-            Assert.AreEqual(1, postI);
+            Assert.True(string.IsNullOrEmpty(pre));
+            Assert.Equal("test", post);
+            Assert.Equal("test", vm.NotChecked);
+            Assert.Equal(1, preI);
+            Assert.Equal(1, postI);
             vm.NotChecked = "test";
-            Assert.IsTrue(string.IsNullOrEmpty(pre));
-            Assert.AreEqual("test", post);
-            Assert.AreEqual("test", vm.NotChecked);
-            Assert.AreEqual(1, preI);
-            Assert.AreEqual(1, postI);
+            Assert.True(string.IsNullOrEmpty(pre));
+            Assert.Equal("test", post);
+            Assert.Equal("test", vm.NotChecked);
+            Assert.Equal(1, preI);
+            Assert.Equal(1, postI);
         }
 
         public class FakeVM : VmBase
@@ -197,7 +213,8 @@ namespace Z.MVVMHelper.Tests
             private string _checkedRegex;
             private string _notChecked;
 
-            public FakeVM() {
+            public FakeVM()
+            {
                 RegisterValidator(new CustomValidator<string>(nameof(CheckedExpression1), s => s.Length > 10));
                 RegisterValidator(new CustomValidator<string>(nameof(CheckedExpression2), s => s.Length < 10, _ => "String length must be < 10"));
             }

@@ -1,7 +1,7 @@
 # Z.MVVM
 Simple MVVM base library with almost 0 boilerplate code
 
-![](https://img.shields.io/badge/.NET-Framework%204.7.2-blue.svg)
+![](https://img.shields.io/badge/.NET-5-blue.svg) ![](https://img.shields.io/badge/.NET%20Core-3.1-blue.svg) ![](https://img.shields.io/badge/.NET%20Framework-4.5-blue.svg)
 
 ## Example of code:
 

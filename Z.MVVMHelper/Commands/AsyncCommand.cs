@@ -1,14 +1,9 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
+
 using Z.MVVMHelper.AsyncTypes;
-using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -17,33 +12,33 @@ namespace Z.MVVMHelper.Commands
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class AsyncCommand : AsyncCommandBase
     {
-        [NotNull] private readonly AsyncAction<object> _action;
+        private readonly AsyncAction<object?> _action;
 
         /// <inheritdoc />
-        public AsyncCommand([NotNull] AsyncAction<object> action, bool allowMultipleExecutions, [NotNull] Predicate<object> canExecute) : base(canExecute) {
-            ValueValidator.ArgumentNull(action, nameof(action));
+        public AsyncCommand(AsyncAction<object?> action, bool allowMultipleExecutions, Predicate<object?> canExecute) : base(canExecute) {
+            if (action is null) throw new ArgumentNullException(nameof(action));
+
             AllowMultipleExecutions = allowMultipleExecutions;
             _action = action;
         }
 
 
         /// <inheritdoc />
-        public AsyncCommand([NotNull] AsyncAction<object> action, bool allowMultipleExecutions) : this(action, allowMultipleExecutions, AlwaysExecute) { }
+        public AsyncCommand(AsyncAction<object?> action, bool allowMultipleExecutions) : this(action, allowMultipleExecutions, AlwaysExecute) { }
 
         /// <inheritdoc />
-        public AsyncCommand([NotNull] AsyncAction action, bool allowMultipleExecutions, [NotNull] Predicate<object> canExecute) : this(_ => action(), allowMultipleExecutions, canExecute) { }
+        public AsyncCommand(AsyncAction action, bool allowMultipleExecutions, Predicate<object?> canExecute) : this(_ => action(), allowMultipleExecutions, canExecute) { }
 
         /// <inheritdoc />
-        public AsyncCommand([NotNull] AsyncAction action, bool allowMultipleExecutions) : this(action, allowMultipleExecutions, AlwaysExecute) { }
+        public AsyncCommand(AsyncAction action, bool allowMultipleExecutions) : this(action, allowMultipleExecutions, AlwaysExecute) { }
 
         #region Overrides of AsyncCommandBase
 
         /// <inheritdoc />
-        protected override async Task RunAsynchronously(object parameter) {
-            Task res = _action(parameter);
+        protected override async Task RunAsynchronously(object? parameter) {
+            var res = _action(parameter);
             if (res is null) {
                 return;
             }

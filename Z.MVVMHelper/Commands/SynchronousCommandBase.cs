@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace Z.MVVMHelper.Commands
 {
@@ -13,12 +8,12 @@ namespace Z.MVVMHelper.Commands
     public abstract class SynchronousCommandBase : CommandBase
     {
         /// <inheritdoc />
-        protected SynchronousCommandBase([NotNull] Predicate<object> canExecute) : base(canExecute) { }
+        protected SynchronousCommandBase(Predicate<object?> canExecute) : base(canExecute) { }
 
         #region Overrides of CommandBase
 
         /// <inheritdoc />
-        protected override void Run(object parameter, bool catchError) {
+        protected override void Run(object? parameter, bool catchError) {
             MethodStart();
             try {
                 RunSynchronously(parameter);
@@ -31,7 +26,7 @@ namespace Z.MVVMHelper.Commands
         /// Content of the method to run
         /// </summary>
         /// <param name="parameter"></param>
-        protected abstract void RunSynchronously([CanBeNull] object parameter);
+        protected abstract void RunSynchronously(object? parameter);
 
         #endregion
     }

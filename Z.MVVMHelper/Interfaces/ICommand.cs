@@ -1,13 +1,5 @@
 ﻿#region USINGS
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-
 #endregion
 
 namespace Z.MVVMHelper.Interfaces
@@ -16,9 +8,6 @@ namespace Z.MVVMHelper.Interfaces
     /// <summary>
     ///     Simple command (both synchronous &amp; asynchronous)
     /// </summary>
-    [SuppressMessage("ReSharper", "MemberCanBeInternal")]
-    [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public interface ICommand : System.Windows.Input.ICommand
     {
         /// <summary>
@@ -34,8 +23,8 @@ namespace Z.MVVMHelper.Interfaces
         /// <summary>
         ///     The exception handler of the command
         /// </summary>
-        [CanBeNull]
-        IExceptionHandler ExceptionHandler { get; set; }
+        
+        IExceptionHandler? ExceptionHandler { get; set; }
 
         /// <summary>
         ///     Trigger a forced refresh of the executable state of the command

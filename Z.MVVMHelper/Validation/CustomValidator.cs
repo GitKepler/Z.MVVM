@@ -1,16 +1,9 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using JetBrains.Annotations;
+
 using Z.MVVMHelper.Interfaces;
-using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -19,17 +12,16 @@ namespace Z.MVVMHelper.Validation
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [CLSCompliant(false)]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public sealed class CustomValidator<T> : IValidator
     {
         /// <inheritdoc />
-        public CustomValidator([NotNull] string propertyName, [NotNull] Expression<Predicate<T>> filter) {
-            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
-            ValueValidator.ArgumentNull(filter, nameof(filter));
+        public CustomValidator(string propertyName, Expression<Predicate<T>> filter) {
+            if (propertyName is null) throw new ArgumentNullException(nameof(propertyName));
+            if (filter is null) throw new ArgumentNullException(nameof(filter));
+
             PropertyName = propertyName;
             var predicateCode = filter.ToString();
-            Predicate<T> predicate = filter.Compile();
+            var predicate = filter.Compile();
             ErrorGenerator = o => o is T t
                 ? predicate(t)
                     ? string.Empty
@@ -38,12 +30,13 @@ namespace Z.MVVMHelper.Validation
         }
 
         /// <inheritdoc />
-        public CustomValidator([NotNull] string propertyName, [NotNull] Predicate<T> filter, [NotNull] Func<T, string> errorGenerator) {
-            ValueValidator.ArgumentNull(filter, nameof(filter));
-            ValueValidator.ArgumentNull(propertyName, nameof(propertyName));
-            ValueValidator.ArgumentNull(errorGenerator, nameof(errorGenerator));
+        public CustomValidator(string propertyName, Predicate<T> filter, Func<T, string> errorGenerator) {
+            if (propertyName is null) throw new ArgumentNullException(nameof(propertyName));
+            if (filter is null) throw new ArgumentNullException(nameof(filter));
+            if (errorGenerator is null) throw new ArgumentNullException(nameof(errorGenerator));
+
             PropertyName = propertyName;
-            Predicate<T> predicate = filter;
+            var predicate = filter;
             ErrorGenerator = o => o is T t
                 ? predicate(t)
                     ? string.Empty
@@ -54,7 +47,7 @@ namespace Z.MVVMHelper.Validation
         #region Overrides of BaseValidationAttribute
 
         /// <inheritdoc />
-        public Func<object, string> ErrorGenerator { get; }
+        public Func<object?, string> ErrorGenerator { get; }
 
         /// <inheritdoc />
         public string PropertyName { get; }

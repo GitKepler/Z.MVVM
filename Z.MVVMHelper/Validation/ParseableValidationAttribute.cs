@@ -1,29 +1,19 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 #endregion
 
 namespace Z.MVVMHelper.Validation
 {
     /// <inheritdoc />
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class ParseableValidationAttribute : BaseValidationAttribute
+    public sealed class ParseableValidationAttribute : BaseValidationAttribute
     {
         /// <summary>
         /// </summary>
-        [Flags]
         public enum ParserTarget
         {
-#pragma warning disable 1591 // No comment needed
             Int8 = SByte,
             UInt8 = Byte,
             Int16 = (1 << 8) + 16,
@@ -44,19 +34,18 @@ namespace Z.MVVMHelper.Validation
             UInt = UInt32,
             ULong = UInt64,
             Float = Single
-#pragma warning restore 1591
         }
 
         /// <inheritdoc />
-        public ParseableValidationAttribute([NotNull] string propertyName, ParserTarget target, [NotNull] CultureInfo culture) : base(propertyName) {
+        public ParseableValidationAttribute(string propertyName, ParserTarget target, IFormatProvider culture) : base(propertyName) {
             switch (target) {
                 case ParserTarget.Int8:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return sbyte.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : sbyte.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -65,10 +54,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.Int16:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return short.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : short.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -77,10 +66,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.Int32:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return int.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : int.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -89,10 +78,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.Int64:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return long.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : long.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -101,10 +90,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.UInt8:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return byte.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : byte.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -113,10 +102,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.UInt16:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return ushort.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : ushort.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -125,10 +114,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.UInt32:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return uint.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : uint.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -137,10 +126,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.UInt64:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return ulong.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : ulong.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -149,10 +138,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.Single:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return float.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : float.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -161,10 +150,10 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.Double:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return double.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : double.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
@@ -173,25 +162,27 @@ namespace Z.MVVMHelper.Validation
                 case ParserTarget.Decimal:
                     ErrorGenerator = o =>
                     {
-                        string val = PreprocessValue<string>(o);
+                        var val = PreprocessValue<string>(o);
                         if (val is null) {
-                            var s = (string) o;
-                            return decimal.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
+                            var s = o as string;
+                            return o is null ? string.Empty : decimal.TryParse(s, NumberStyles.Any, culture, out _) ? string.Empty : $"Incorrect format for {target}";
                         }
 
                         return val;
                     };
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(target));
             }
         }
 
         /// <inheritdoc />
-        public ParseableValidationAttribute([NotNull] string propertyName, ParserTarget target) : this(propertyName, target, CultureInfo.CurrentCulture) { }
+        public ParseableValidationAttribute(string propertyName, ParserTarget target) : this(propertyName, target, CultureInfo.CurrentCulture) { }
 
         #region Overrides of BaseValidationAttribute
 
         /// <inheritdoc />
-        public override Func<object, string> ErrorGenerator { get; }
+        public override Func<object?, string> ErrorGenerator { get; }
 
         #endregion
     }

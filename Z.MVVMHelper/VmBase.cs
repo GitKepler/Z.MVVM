@@ -1,14 +1,10 @@
 ﻿#region USINGS
 
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
+
 using Z.MVVMHelper.Interfaces;
-using Z.MVVMHelper.Internals;
 
 #endregion
 
@@ -26,7 +22,7 @@ namespace Z.MVVMHelper
         /// <summary>
         /// The VM-wide command repository
         /// </summary>
-        [NotNull]
+        
         public ICommandRepository GlobalRepository { get; }
 
         /// <summary>
@@ -36,6 +32,8 @@ namespace Z.MVVMHelper
             if (useAttributes) {
                 InitializeDataValidator();
             }
+            InitializeINotifyDataError();
+            GlobalRepository = new CommandRepository();
         }
 
         /// <inheritdoc />
@@ -43,10 +41,8 @@ namespace Z.MVVMHelper
         ///     Constructor for <see cref="VmBase" />
         /// </summary>
         protected VmBase() : this(true) {
-            InitializeINotifyDataError();
-            GlobalRepository = new CommandRepository();
         }
-        
+
         /// <summary>
         ///     Automate calls to <see cref="OnPropertyChanging" /> and <see cref="OnPropertyChanged" />
         /// </summary>
@@ -58,9 +54,8 @@ namespace Z.MVVMHelper
         /// <param name="backingField">A ref to the backing field of the property</param>
         /// <param name="newValue">The new value of the property</param>
         /// <param name="propName">The name of the property</param>
-        [SuppressMessage("ReSharper", "RedundantAssignment")]
-        protected void EditProperty<T>([CanBeNull] ref T backingField, [CanBeNull] T newValue,
-            [NotNull] [CallerMemberName] string propName = "") {
+        protected void EditProperty<T>(ref T backingField, T newValue,
+            [CallerMemberName] string propName = "") {
             if (backingField?.Equals(newValue) ?? false) {
                 return;
             }

@@ -1,14 +1,9 @@
 ﻿#region USINGS
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using JetBrains.Annotations;
+
 
 #endregion
 
@@ -18,7 +13,6 @@ namespace Z.MVVMHelper.Converters
     /// <summary>
     /// Perform an inversion of a <see cref="bool"/> value
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class InverterConverter : IValueConverter
     {
         /// <inheritdoc />
@@ -30,13 +24,13 @@ namespace Z.MVVMHelper.Converters
         /// <param name="parameter"></param>
         /// <param name="culture"></param>
         /// <returns></returns>
-        public object Convert(object value, [CanBeNull] Type targetType, object parameter,
-            [CanBeNull] CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter,
+            CultureInfo culture) {
             if (value is bool b) {
                 return !b;
             }
 
-            throw Internals.ExceptionGenerator.InvalidArgumentType<bool>(value?.GetType(), nameof(value));
+            throw new ArgumentException($"The provided value is not of the correct type.", nameof(value));
         }
 
         /// <inheritdoc />
@@ -48,7 +42,7 @@ namespace Z.MVVMHelper.Converters
         /// <param name="parameter"></param>
         /// <param name="culture"></param>
         /// <returns></returns>
-        public object ConvertBack(object value, [CanBeNull] Type targetType, object parameter, [CanBeNull] CultureInfo culture) {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
             return Convert(value, targetType, parameter, culture);
         }
     }
